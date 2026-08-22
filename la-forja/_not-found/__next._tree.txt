@@ -1,4 +1,4 @@
-:HL["/la-forja/_next/static/chunks/3fm5dky1sh04h.css","style"]
-:HL["/la-forja/_next/static/chunks/0i3mm4b4a-7sy.css","style"]
-:HL["/la-forja/_next/static/chunks/1l874rhty73xh.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"p61131QwATBTDM-Zip0zM"}
+:HL["/Kyodai.co/la-forja/_next/static/chunks/3fm5dky1sh04h.css","style"]
+:HL["/Kyodai.co/la-forja/_next/static/chunks/0i3mm4b4a-7sy.css","style"]
+:HL["/Kyodai.co/la-forja/_next/static/chunks/1l874rhty73xh.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"mtzubuzo88JFxG2oGBdDO"}
