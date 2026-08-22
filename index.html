@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>兄弟 KYODAI — La casa</title>
+<meta name="description" content="Kyodai — Una hermandad de constancia. Suplementos, entrenamiento y comunidad.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════
+   兄弟 KYODAI — Archivo único
+   Vista 1 · LA CASA        (antes: "Landing Page.html")
+   Vista 2 · EL SUSTENTO    (antes: "Suplementos.html")
+   El router de abajo alterna entre las dos con el hash de la URL:
+     #/            → la casa
+     #/suplementos → la tienda
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────── BLOQUE 1 · LA CASA ─────────────────── */
+:root{
+  --black:#000; --panel:#0A0A0B; --panel2:#121214; --line:rgba(255,255,255,.08);
+  --offwhite:#D6D6D2; --grey:#8A8A92; --dim:#4A4A50; --crimson:#A81829; --crimson2:#C21E31;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#000;color:var(--offwhite);font-family:'Inter',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden;height:100svh}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:10px;height:8px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:#2A2A2E;border-radius:5px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ═══ Composición compartida intro/hero (misma geometría = transición invisible) ═══ */
+.logoStack{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ideo{font-family:'Noto Serif JP',serif;font-weight:600;font-size:clamp(100px,25vw,180px);line-height:.95;letter-spacing:.06em;color:#fff;display:flex}
+.latin{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(24px,5.5vw,40px);color:var(--offwhite);margin-top:20px;display:flex;gap:.55em}
+.latin b{font-weight:300;display:inline-block}
+.itag{margin-top:22px;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey)}
+.itag em{font-style:normal;color:var(--offwhite)}
+.hankoBase{position:absolute;left:calc(50% + clamp(76px,19vw,142px));top:calc(50% + clamp(28px,7.5vw,58px));
+  width:clamp(34px,8vw,52px);height:clamp(34px,8vw,52px);background:var(--crimson);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif JP',serif;font-weight:600;color:#fff;font-size:clamp(13px,3.2vw,20px);
+  writing-mode:vertical-rl;letter-spacing:.1em;line-height:1;
+  transform:rotate(-8deg);box-shadow:0 6px 24px rgba(168,24,41,.35)}
+
+/* ═══════════════════════ INTRO ═══════════════════════ */
+#intro{position:fixed;inset:0;z-index:3000;cursor:pointer;background:#000;overflow:hidden;
+  transition:opacity 1.1s ease}
+#intro.handoff{opacity:0}
+#intro.gone{pointer-events:none}
+#ink{position:absolute;inset:0;z-index:1}
+.grain{position:absolute;inset:-50%;z-index:2;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  animation:grainShift 1.2s steps(4) infinite;transition:opacity 1.4s ease}
+#intro.settle .grain{opacity:0}
+
+/* — Gota de tinta — */
+.drop{position:absolute;left:50%;top:50%;width:7px;height:7px;margin:-3.5px;border-radius:50%;
+  background:var(--crimson2);z-index:5;opacity:0;box-shadow:0 0 12px rgba(194,30,49,.8)}
+#intro.p-drop .drop{animation:dropFall .65s cubic-bezier(.5,0,1,.6) forwards}
+@keyframes dropFall{0%{opacity:0;transform:translateY(-46svh) scale(.6)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(0) scale(.25)}}
+@keyframes grainShift{0%{transform:translate(0,0)}25%{transform:translate(-2%,3%)}50%{transform:translate(3%,-2%)}75%{transform:translate(-3%,-3%)}100%{transform:translate(0,0)}}
+
+/* — Ondas de impacto — */
+.ripple{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px;border-radius:50%;
+  border:1px solid rgba(194,30,49,.7);z-index:4;opacity:0;pointer-events:none}
+#intro.p-bloom .ripple{animation:rippleOut 1.5s cubic-bezier(.16,1,.3,1) forwards}
+#intro.p-bloom .ripple.r2{animation-delay:.18s;border-color:rgba(214,214,210,.28)}
+#intro.p-bloom .ripple.r3{animation-delay:.4s;border-color:rgba(214,214,210,.14)}
+@keyframes rippleOut{0%{opacity:0;transform:scale(1)}8%{opacity:1}100%{opacity:0;transform:scale(30)}}
+
+/* — Escenario — */
+.stage{position:absolute;inset:0;z-index:5}
+.stage .logoStack{position:absolute;inset:0}
+
+/* — Enso (se disuelve antes del traspaso) — */
+.enso{position:absolute;left:50%;top:50%;width:min(94vw,560px);height:min(94vw,560px);transform:translate(-50%,-52%);pointer-events:none;
+  transition:opacity 1.5s ease}
+#intro.settle .enso{opacity:0}
+.enso path{fill:none;stroke-linecap:round;stroke:var(--crimson);opacity:0}
+.enso .e1{stroke-width:11;stroke-dasharray:100;stroke-dashoffset:100}
+.enso .e2{stroke-width:4.5;stroke-dasharray:100;stroke-dashoffset:100}
+.enso .e3{stroke-width:1.6;stroke-dasharray:100;stroke-dashoffset:100;stroke:var(--crimson2)}
+#intro.p-enso .enso .e1{animation:ensoDraw1 1.35s cubic-bezier(.65,0,.35,1) forwards}
+#intro.p-enso .enso .e2{animation:ensoDraw2 1.35s cubic-bezier(.65,0,.35,1) .08s forwards}
+#intro.p-enso .enso .e3{animation:ensoDraw3 1.35s cubic-bezier(.65,0,.35,1) .15s forwards}
+@keyframes ensoDraw1{0%{opacity:.32;stroke-dashoffset:100}100%{opacity:.32;stroke-dashoffset:9}}
+@keyframes ensoDraw2{0%{opacity:.55;stroke-dashoffset:100}100%{opacity:.55;stroke-dashoffset:9}}
+@keyframes ensoDraw3{0%{opacity:.8;stroke-dashoffset:100}100%{opacity:.8;stroke-dashoffset:9}}
+
+/* — Kanji, carácter por carácter — */
+#intro .ideo span{opacity:0;filter:blur(16px);transform:scale(1.14) translateY(10px);display:inline-block}
+#intro.p-kanji .ideo span{animation:ideoIn 1.05s cubic-bezier(.22,1,.36,1) forwards}
+#intro.p-kanji .ideo span:nth-child(2){animation-delay:.22s}
+@keyframes ideoIn{to{opacity:1;filter:blur(0);transform:none}}
+
+/* — Hanko — */
+#intro .hankoBase{opacity:0;transform:rotate(-14deg) scale(2.4);box-shadow:none;z-index:6}
+#intro.p-hanko .hankoBase{animation:stamp .42s cubic-bezier(.34,1.4,.64,1) forwards}
+@keyframes stamp{0%{opacity:0;transform:rotate(-14deg) scale(2.4)}55%{opacity:1;transform:rotate(-7deg) scale(.94)}100%{opacity:1;transform:rotate(-8deg) scale(1);box-shadow:0 6px 24px rgba(168,24,41,.35)}}
+
+/* — Latín letra por letra + tagline — */
+#intro .latin b{opacity:0;filter:blur(8px);transform:translateY(14px)}
+#intro.p-latin .latin b{animation:letterIn .7s cubic-bezier(.22,1,.36,1) forwards}
+#intro.p-latin .latin b:nth-child(1){animation-delay:0s}
+#intro.p-latin .latin b:nth-child(2){animation-delay:.07s}
+#intro.p-latin .latin b:nth-child(3){animation-delay:.14s}
+#intro.p-latin .latin b:nth-child(4){animation-delay:.21s}
+#intro.p-latin .latin b:nth-child(5){animation-delay:.28s}
+#intro.p-latin .latin b:nth-child(6){animation-delay:.35s}
+@keyframes letterIn{to{opacity:1;filter:blur(0);transform:none}}
+#intro .itag{opacity:0}
+#intro.p-latin .itag{animation:fadeUp .9s ease .55s forwards}
+.skip{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:7;
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);opacity:0;animation:fadeUp .8s ease 1.4s forwards;
+  transition:opacity .6s ease}
+#intro.settle .skip{opacity:0}
+
+/* ═══════════════════════ HERO (réplica exacta del cuadro final de la intro) ═══════════════════════ */
+.hero{position:relative;min-height:100svh}
+.hero .logoStack{position:absolute;inset:0}
+.hero .hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--dim);font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:0}
+.hero .hint::after{content:"";display:block;width:1px;height:34px;background:linear-gradient(var(--dim),transparent);margin:10px auto 0}
+body.go .hero .hint{animation:fadeUp 1.2s ease .6s forwards}
+
+/* ═══════════════════════ PUERTAS ═══════════════════════ */
+.doors{max-width:1060px;margin:0 auto;padding:24px 20px 72px;display:grid;gap:16px}
+@media(min-width:820px){.doors{grid-template-columns:repeat(3,1fr);gap:20px;padding-top:40px}}
+.door{position:relative;display:block;background:var(--panel);border:1px solid var(--line);padding:34px 26px 30px;overflow:hidden;
+  transition:border-color .45s ease,transform .45s cubic-bezier(.22,1,.36,1);min-height:220px}
+.door::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--crimson);
+  transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.65,0,.35,1)}
+.door:hover,.door:focus-visible{border-color:rgba(255,255,255,.22);transform:translateY(-4px)}
+.door:hover::before,.door:focus-visible::before{transform:scaleX(1)}
+.door:focus-visible{outline:1px solid var(--crimson);outline-offset:3px}
+.door .mark{position:absolute;right:-14px;bottom:-30px;font-family:'Noto Serif JP',serif;font-weight:600;
+  font-size:150px;line-height:1;color:rgba(255,255,255,.045);pointer-events:none;transition:color .5s ease}
+.door:hover .mark{color:rgba(168,24,41,.14)}
+.door .num{font-size:11px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
+.door h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:30px;color:#fff;margin:14px 0 8px;letter-spacing:.04em}
+.door p{font-size:13.5px;line-height:1.65;color:var(--grey);max-width:34ch}
+.door .go{display:inline-flex;align-items:center;gap:10px;margin-top:22px;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--offwhite)}
+.door .go svg{transition:transform .4s ease}
+.door:hover .go svg{transform:translateX(6px)}
+.door.soon{cursor:default}
+.door.soon .go{color:var(--dim)}
+.door .soonTag{display:inline-block;margin-left:10px;font-size:10px;letter-spacing:.2em;color:var(--crimson2);border:1px solid rgba(168,24,41,.4);padding:3px 8px;text-transform:uppercase}
+
+/* ═══════════════════════ FILOSOFÍA ═══════════════════════ */
+.philo{border-top:1px solid var(--line);padding:88px 24px;position:relative}
+.philo .inner{max-width:720px;margin:0 auto;text-align:center}
+.philo .eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--crimson2)}
+.philo h3{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(28px,6vw,44px);color:#fff;margin:20px 0 26px;line-height:1.2}
+.philo h3 em{font-style:italic}
+.philo p{font-size:15px;line-height:1.9;color:var(--grey);margin-bottom:18px}
+.philo p strong{font-weight:500;color:var(--offwhite)}
+.philo .kanjiGhost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Noto Serif JP',serif;
+  font-size:min(60vw,420px);color:rgba(255,255,255,.02);pointer-events:none;line-height:1}
+
+/* ═══════════════════════ FUNDADORES ═══════════════════════ */
+.founders{border-top:1px solid var(--line);padding:80px 24px}
+.founders .inner{max-width:860px;margin:0 auto}
+.founders .eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--crimson2);text-align:center;display:block}
+.founders h3{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(26px,5.5vw,38px);color:#fff;text-align:center;margin:18px 0 46px}
+.fGrid{display:grid;gap:16px}
+@media(min-width:680px){.fGrid{grid-template-columns:1fr 1fr;gap:20px}}
+.fCard{background:var(--panel);border:1px solid var(--line);padding:32px 28px;position:relative;overflow:hidden}
+.fCard .k{position:absolute;right:-6px;top:-18px;font-family:'Noto Serif JP',serif;font-size:96px;color:rgba(255,255,255,.04);line-height:1}
+.fCard h4{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:26px;color:#fff;letter-spacing:.03em}
+.fCard .role{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--crimson2);margin:8px 0 16px}
+.fCard p{font-size:13.5px;line-height:1.7;color:var(--grey)}
+.foundersNote{text-align:center;margin-top:34px;color:var(--dim);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:17px}
+
+/* ═══════════════════════ FOOTER ═══════════════════════ */
+footer{border-top:1px solid var(--line);padding:52px 24px 44px;text-align:center}
+footer .fk{font-family:'Noto Serif JP',serif;font-weight:600;font-size:34px;color:#fff}
+footer .fl{font-family:'Cormorant Garamond',serif;letter-spacing:.5em;padding-left:.5em;font-size:14px;color:var(--grey);margin-top:8px}
+.social{display:flex;justify-content:center;gap:26px;margin:26px 0 22px}
+.social a{color:var(--grey);transition:color .3s ease}
+.social a:hover{color:#fff}
+footer .fine{font-size:11px;letter-spacing:.14em;color:var(--dim)}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
+  #intro{display:none}
+  .hero .hint{opacity:1}
+  .reveal{opacity:1;transform:none}
+}
+
+/* ─────────────────── BLOQUE 2 · ROUTER DE VISTAS ─────────────────── */
+.view{display:none}
+.view.on{display:block}
+.shopOnly{display:none}
+body.shop .shopOnly{display:block}
+
+/* Volver a la casa (nav de la tienda) */
+.navLeft{display:flex;align-items:center;gap:16px;min-width:0}
+.navBack{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--grey);
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;
+  border:1px solid rgba(255,255,255,.14);padding:9px 15px;border-radius:2px;transition:border-color .3s,color .3s}
+.navBack:hover{border-color:#fff;color:#fff}
+.navBack .jp{font-family:'Noto Serif JP',serif;font-size:13px}
+
+/* Footer unificado (base: la casa · links reales: la tienda) */
+footer{background:radial-gradient(ellipse at 50% 100%,#101012,#000)}
+.fmotto{margin-top:20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--grey)}
+.social{display:flex;justify-content:center;gap:14px;margin:30px 0 24px;flex-wrap:wrap}
+.social a{display:flex;align-items:center;gap:9px;border:1px solid rgba(255,255,255,.14);
+  padding:11px 20px;border-radius:2px;color:var(--offwhite);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;transition:border-color .3s,color .3s}
+.social a:hover{border-color:var(--crimson);color:#fff}
+.fine+.fine{margin-top:10px}
+
+/* ─────────────────── BLOQUE 3 · EL SUSTENTO ─────────────────── */
+button{font-family:'Inter',sans-serif}
+input,select,textarea{font-family:'Inter',sans-serif}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* ---------- NAV ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 28px;background:rgba(0,0,0,.78);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.05)}
+nav .logo{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+nav .logo .jp{font-family:'Noto Serif JP',serif;font-weight:600;font-size:21px;color:#fff;letter-spacing:.1em}
+nav .logo .lt{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.5em;color:var(--grey)}
+nav .logo .tag{font-size:10px;letter-spacing:.28em;color:var(--dim);text-transform:uppercase}
+#cartBtn{display:flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--offwhite);padding:9px 18px;border-radius:2px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:border-color .3s,color .3s}
+#cartBtn:hover{border-color:#fff;color:#fff}
+#cartCount{background:var(--crimson);color:#fff;font-size:11px;font-weight:600;min-width:20px;height:20px;border-radius:10px;display:none;align-items:center;justify-content:center;padding:0 6px}
+
+/* ---------- HERO ---------- */
+header#top{min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:130px 24px 90px;background:radial-gradient(ellipse at 50% 40%,#141416 0%,#050505 55%,#000 100%)}
+.heroKanji{font-family:'Noto Serif JP',serif;font-weight:600;font-size:clamp(90px,20vw,220px);color:#fff;line-height:.9;letter-spacing:.04em;text-shadow:0 0 80px rgba(255,255,255,.06);animation:fadeUp 1.2s ease both}
+.heroLatin{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(24px,6vw,52px);letter-spacing:.6em;color:var(--offwhite);margin:14px 0 0 .3em;animation:fadeUp 1.5s ease both}
+.heroSub{margin-top:38px;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--dim);animation:fadeUp 1.8s ease both}
+.heroQuote{margin-top:12px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(20px,3.4vw,30px);color:var(--offwhite);max-width:640px;line-height:1.4;animation:fadeUp 2s ease both}
+.heroCount{margin-top:14px;font-size:12px;letter-spacing:.14em;color:var(--grey);animation:fadeUp 2.1s ease both}
+.heroCta{margin-top:44px;display:inline-block;background:var(--crimson);color:#fff;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;padding:16px 42px;border-radius:2px;animation:fadeUp 2.2s ease both;transition:background .3s,transform .3s;box-shadow:0 10px 40px rgba(168,24,41,.25)}
+.heroCta:hover{background:var(--crimson2);transform:translateY(-2px)}
+.heroScroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;animation:pulse 2.4s infinite}
+
+/* ---------- TOOLBAR ---------- */
+#toolbar{position:sticky;top:53px;z-index:800;background:rgba(0,0,0,.88);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid var(--line);padding:12px 28px;display:flex;flex-direction:column;gap:10px}
+#tabs{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+#tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:9px 16px;border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--grey);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .3s;font-weight:400;white-space:nowrap}
+.tab:hover{border-color:var(--grey);color:#fff}
+.tab.on{border-color:#fff;background:#fff;color:#000;font-weight:600}
+.tab.kits{border-color:rgba(168,24,41,.55);color:#C8636F}
+.tab.kits.on{border-color:var(--crimson);background:var(--crimson);color:#fff}
+#controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#controls select,#controls input[type=text],#controls input[type=search]{background:var(--panel);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:12px;padding:10px 12px;border-radius:2px;outline:none;font-weight:300;letter-spacing:.03em}
+#controls select:focus,#controls input:focus{border-color:var(--grey)}
+#q{flex:1;min-width:150px}
+#groupBrand{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);cursor:pointer;user-select:none;border:1px solid rgba(255,255,255,.12);padding:10px 12px;border-radius:2px;transition:all .3s;white-space:nowrap}
+#groupBrand.on{border-color:#fff;color:#fff}
+#groupBrand .box{width:12px;height:12px;border:1px solid var(--grey);border-radius:1px;display:inline-block;position:relative}
+#groupBrand.on .box{background:var(--crimson);border-color:var(--crimson)}
+
+/* ---------- CATALOG ---------- */
+main#catalogo{max-width:1280px;margin:0 auto;padding:10px 28px 80px}
+.noRes{text-align:center;padding:110px 20px;color:var(--grey)}
+.noRes .mu{font-family:'Noto Serif JP',serif;font-size:44px;color:#2A2A2E;margin-bottom:16px}
+section.cat{padding:74px 0 10px}
+.secHead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:30px}
+.secEyebrow{font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.4em;color:var(--crimson);text-transform:uppercase;margin-bottom:10px}
+.secTitle{margin:0;font-size:clamp(28px,4.5vw,44px);color:#fff;font-weight:300;letter-spacing:.01em;line-height:1.1;font-family:'Inter',sans-serif}
+.secTitle .jp{font-family:'Noto Serif JP',serif;font-size:.55em;color:var(--dim);margin-left:10px}
+.secTag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--grey);margin-top:8px}
+.secCount{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);padding-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:18px}
+article.card{position:relative;display:flex;flex-direction:column;background:linear-gradient(165deg,#121214,#0A0A0B);border:1px solid var(--line);border-radius:2px;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s;opacity:0;transform:translateY(16px)}
+article.card.vis{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease,border-color .35s,box-shadow .35s}
+article.card:hover{transform:translateY(-5px);border-color:rgba(168,24,41,.5);box-shadow:0 24px 50px rgba(0,0,0,.7)}
+.badge{position:absolute;top:12px;left:12px;z-index:5;background:var(--crimson);color:#fff;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:5px 10px;border-radius:1px}
+.tile{width:100%;aspect-ratio:4/5;background:#0A0A0B;border-bottom:1px solid rgba(255,255,255,.05);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile img.cut{object-fit:contain;padding:16px}
+.tile .wm{position:absolute;font-family:'Noto Serif JP',serif;font-weight:600;font-size:120px;color:rgba(255,255,255,.035);user-select:none}
+.tile .tb{position:relative;text-align:center;padding:0 14px}
+.tile .tb .b{font-family:'Cormorant Garamond',serif;font-size:19px;letter-spacing:.28em;text-transform:uppercase;color:var(--offwhite)}
+.tile .tb .n{margin-top:8px;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+.tile .tb .rule{width:26px;height:1px;background:var(--crimson);margin:12px auto 0}
+.cardBody{display:flex;flex-direction:column;gap:8px;padding:16px 16px 18px;flex:1}
+.cardMeta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cardBrand{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);font-weight:500}
+.cardSub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-align:right}
+.cardName{margin:0;font-size:16.5px;color:#fff;font-weight:500;letter-spacing:.03em;line-height:1.3}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.pill{padding:5px 10px;border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--grey);font-size:10.5px;letter-spacing:.05em;cursor:pointer;border-radius:2px;transition:all .25s}
+.pill:hover{border-color:var(--grey);color:#fff}
+.pill.on{border-color:var(--offwhite);background:#1C1C1F;color:#fff;font-weight:500}
+.priceRow{margin-top:auto;padding-top:12px}
+.priceLbl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.priceVal{font-size:19px;color:#fff;font-weight:600;letter-spacing:.01em}
+.addBtn{margin-top:10px;width:100%;padding:12px 10px;background:transparent;border:1px solid rgba(255,255,255,.2);color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .3s}
+.addBtn:hover,.addBtn.done{background:var(--crimson);border-color:var(--crimson);color:#fff}
+
+/* Kits */
+.kitList{font-size:12px;color:var(--grey);line-height:1.7;margin-top:4px}
+.kitList span{color:var(--offwhite)}
+.kitKanji{font-family:'Noto Serif JP',serif;font-size:40px;color:rgba(255,255,255,.9)}
+.tile.kit{aspect-ratio:16/7;background:linear-gradient(135deg,#16161A,#0A0A0B)}
+.tile.kit .wm{font-size:150px;color:rgba(168,24,41,.10)}
+
+/* ---------- DRAWER (pedido) ---------- */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:950;display:none}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,94vw);z-index:960;background:var(--panel);border-left:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;box-shadow:-30px 0 80px rgba(0,0,0,.8);transform:translateX(105%);transition:transform .45s cubic-bezier(.22,1,.36,1)}
+#drawer.open{transform:none}
+.dHead{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--line)}
+.dTitle{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#fff;font-weight:500}
+.dTitle .jp{font-family:'Noto Serif JP',serif;color:var(--dim);margin-left:8px}
+.dClose{background:none;border:none;color:var(--grey);font-size:20px;cursor:pointer;line-height:1}
+.dClose:hover{color:#fff}
+.dBody{flex:1;overflow-y:auto;padding:10px 24px}
+.dEmpty{text-align:center;padding:70px 10px;color:var(--dim);font-size:13px;letter-spacing:.06em}
+.dEmpty em{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--grey)}
+.cItem{display:flex;flex-direction:column;gap:6px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.cTop{display:flex;justify-content:space-between;gap:10px}
+.cBrand{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+.cName{font-size:14px;color:#fff;font-weight:500;margin-top:2px}
+.cPres{font-size:11.5px;color:var(--dim);margin-top:2px}
+.cLine{font-size:14px;color:var(--offwhite);font-weight:600;white-space:nowrap}
+.cCtl{display:flex;align-items:center;gap:10px}
+.qBtn{width:26px;height:26px;background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--offwhite);border-radius:2px;cursor:pointer;font-size:14px;line-height:1}
+.qBtn:hover{border-color:#fff;color:#fff}
+.cQty{font-size:13px;color:#fff;min-width:18px;text-align:center}
+.cRem{margin-left:auto;background:none;border:none;color:var(--dim);font-size:10px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.cRem:hover{color:var(--crimson)}
+.dFoot{padding:18px 24px 24px;border-top:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,#0A0A0B,#000)}
+.discRow{display:flex;gap:8px;margin-bottom:14px}
+.discRow input{flex:1;background:#000;border:1px solid rgba(255,255,255,.12);color:#fff;font-size:12px;padding:11px 12px;border-radius:2px;outline:none;letter-spacing:.08em;text-transform:uppercase}
+.discRow input:focus{border-color:var(--grey)}
+.discRow button{background:transparent;border:1px solid rgba(255,255,255,.2);color:#fff;padding:0 16px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;cursor:pointer;border-radius:2px;transition:all .3s}
+.discRow button:hover{border-color:var(--crimson);background:var(--crimson)}
+.discMsg{font-size:11px;margin:-6px 0 12px;letter-spacing:.04em;min-height:14px}
+.discMsg.ok{color:#7FBF8E}
+.discMsg.bad{color:#C8636F}
+.tRow{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;color:var(--grey);letter-spacing:.04em}
+.tRow.total{margin:10px 0 16px;padding-top:10px;border-top:1px solid var(--line)}
+.tRow.total .l{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey)}
+.tRow.total .v{font-size:20px;color:#fff;font-weight:600}
+.tRow .neg{color:#7FBF8E}
+.primaryBtn{display:block;width:100%;text-align:center;text-decoration:none;padding:16px 10px;font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;border-radius:2px;transition:background .3s;background:var(--crimson);color:#fff;border:none;cursor:pointer}
+.primaryBtn:hover{background:var(--crimson2)}
+.primaryBtn[disabled]{background:#1C1C1F;color:var(--dim);pointer-events:none}
+.ghostBtn{display:block;width:100%;text-align:center;background:transparent;border:1px solid rgba(255,255,255,.16);color:var(--grey);padding:12px 10px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:10px;transition:all .3s}
+.ghostBtn:hover{border-color:#fff;color:#fff}
+.dNote{text-align:center;margin-top:12px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+
+/* Address form */
+.fGroup{margin:16px 0}
+.fLbl{display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+.fLbl .opt{color:var(--dim);text-transform:none;letter-spacing:.04em}
+.fGroup select,.fGroup input,.fGroup textarea{width:100%;background:#000;border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px;padding:12px;border-radius:2px;outline:none;font-weight:300;resize:vertical}
+.fGroup select:focus,.fGroup input:focus,.fGroup textarea:focus{border-color:var(--grey)}
+.fHint{font-size:11px;color:var(--dim);margin-top:6px;letter-spacing:.02em}
+.shipNote{margin-top:4px;font-size:11.5px;letter-spacing:.03em;padding:10px 12px;border:1px solid var(--line);border-radius:2px;color:var(--grey);background:#0E0E10}
+.shipNote b{color:#fff;font-weight:600}
+
+/* ---------- SUMMARY MODAL (central) ---------- */
+#summaryWrap{position:fixed;inset:0;z-index:980;display:none;align-items:center;justify-content:center;padding:20px}
+#summaryWrap .bg{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px)}
+#summary{position:relative;width:min(540px,96vw);max-height:92vh;overflow-y:auto;background:linear-gradient(170deg,#121214,#0A0A0B);border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:34px 30px 30px;box-shadow:0 40px 120px rgba(0,0,0,.9)}
+#summary .sKanji{text-align:center;font-family:'Noto Serif JP',serif;font-size:34px;color:#fff}
+#summary .sTitle{text-align:center;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--grey);margin-top:6px}
+#summary .sDate{text-align:center;font-size:11px;color:var(--dim);margin-top:8px;letter-spacing:.08em}
+#summary .sBlock{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+#summary .sBlockT{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--crimson);margin-bottom:12px;font-family:'Cormorant Garamond',serif;font-size:13px}
+#summary .sLine{display:flex;justify-content:space-between;gap:14px;font-size:12.5px;color:var(--offwhite);padding:5px 0}
+#summary .sLine .q{color:var(--dim)}
+#summary .sAddr{font-size:13px;color:var(--offwhite);line-height:1.75}
+#summary .sAddr .k{color:var(--dim);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-right:6px}
+/* ---------- MOBILE OPTIMIZATION ---------- */
+@media (max-width:720px){
+  nav{padding:12px 16px}
+  nav .logo .tag{display:none}
+  #toolbar{top:49px;padding:10px 14px}
+  main{padding:6px 14px 60px}
+  section.cat{padding:52px 0 6px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .tile{aspect-ratio:1/1}
+  .tile .wm{font-size:76px}
+  .tile .tb .b{font-size:13px;letter-spacing:.2em}
+  .tile .tb .n{font-size:8px;letter-spacing:.16em;margin-top:5px}
+  .tile .tb .rule{margin-top:8px;width:20px}
+  .badge{top:8px;left:8px;font-size:8px;padding:4px 7px}
+  .cardBody{padding:11px 11px 13px;gap:6px}
+  .cardSub{display:none}
+  .cardName{font-size:12.5px;line-height:1.25}
+  .cardBrand{font-size:8.5px;letter-spacing:.18em}
+  .pill{padding:4px 7px;font-size:9px}
+  .priceRow{padding-top:8px}
+  .priceVal{font-size:15px}
+  .priceLbl{font-size:8px}
+  .addBtn{padding:10px 6px;font-size:9px;letter-spacing:.14em;margin-top:8px}
+  .tile.kit{aspect-ratio:16/8}
+  .tile.kit .wm{font-size:96px}
+  .grid.kitsGrid{grid-template-columns:1fr}
+  #controls{gap:8px}
+  #controls select{flex:1;min-width:0;font-size:11px;padding:9px 8px}
+  #groupBrand{font-size:9px;padding:9px 9px}
+  #q{width:100%;flex:1 0 100%}
+  #summary{padding:26px 18px 22px}
+}
+@media (min-width:721px) and (max-width:1024px){
+  .grid{grid-template-columns:repeat(3,1fr);gap:14px}
+}
+
+/* ─────────────────── BLOQUE 4 · MÓVIL ─────────────────── */
+@media (max-width:720px){
+  .navBack{padding:9px 11px;gap:0}
+  .navBack .lbl{display:none}
+  .navLeft{gap:10px}
+  .social{gap:10px}
+  .social a{padding:10px 15px;font-size:10px;letter-spacing:.16em}
+  .fmotto{font-size:16px}
+}
+</style>
+</head>
+<body class="locked">
+
+<!-- ═══════════════════ INTRO (única del sitio) ═══════════════════
+     Su cuadro final es idéntico al hero de la casa: el traspaso es invisible.
+     Si se entra directo a #/suplementos, la intro no se reproduce.        -->
+<div id="intro" role="presentation" aria-hidden="true">
+  <canvas id="ink"></canvas>
+  <div class="grain"></div>
+  <div class="drop"></div>
+  <div class="ripple r1"></div>
+  <div class="ripple r2"></div>
+  <div class="ripple r3"></div>
+  <div class="stage">
+    <svg class="enso" viewBox="0 0 400 400">
+      <path class="e1" pathLength="100" d="M 213 42 A 158 158 0 1 0 322 96"/>
+      <path class="e2" pathLength="100" d="M 210 46 A 154 154 0 1 0 318 100"/>
+      <path class="e3" pathLength="100" d="M 208 50 A 150 150 0 1 0 314 104"/>
+    </svg>
+    <div class="logoStack">
+      <div class="ideo"><span>兄</span><span>弟</span></div>
+      <div class="latin"><b>K</b><b>Y</b><b>O</b><b>D</b><b>A</b><b>I</b></div>
+      <div class="itag">El talento se agota. <em>La constancia se alimenta.</em></div>
+    </div>
+    <div class="hankoBase">兄弟</div>
+  </div>
+  <div class="skip">Toca para entrar</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VISTA 1 · LA CASA
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-home" class="view">
+
+<!-- HERO: réplica exacta del cuadro final de la intro -->
+<header class="hero">
+  <div class="logoStack">
+    <div class="ideo"><span>兄</span><span>弟</span></div>
+    <div class="latin"><b>K</b><b>Y</b><b>O</b><b>D</b><b>A</b><b>I</b></div>
+    <div class="itag">El talento se agota. <em>La constancia se alimenta.</em></div>
+  </div>
+  <div class="hankoBase">兄弟</div>
+  <div class="hint">Elige tu camino</div>
+</header>
+
+<!--
+  PUERTAS:
+  01 · El sustento  → #/suplementos  (vista 2 de este mismo archivo) ✔ conectada
+  02 · La hermandad → por definir (comunidad / noticias / ropa) — "Próximamente"
+  03 · La forja     → la-forja/ (calculadora de alimentación y entrenamiento,
+                      se regenera con `npm run publicar` desde
+                      "Herramienta la Forja/kyodai-herramienta") ✔ conectada
+-->
+<main class="doors" aria-label="Accesos">
+
+  <a class="door reveal" href="#/suplementos">
+    <span class="mark" aria-hidden="true">糧</span>
+    <span class="num">01 — Suplementos</span>
+    <h2>El sustento</h2>
+    <p>Lo que alimenta la constancia. Proteínas, creatina, pre-entrenos y lo esencial para sostener el trabajo diario.</p>
+    <span class="go">Entrar
+      <svg width="26" height="10" viewBox="0 0 26 10" fill="none" aria-hidden="true"><path d="M0 5h24M20 1l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg>
+    </span>
+  </a>
+
+  <span class="door soon reveal" data-destino="PENDIENTE_URL_PUERTA_2" role="link" aria-disabled="true">
+    <span class="mark" aria-hidden="true">道</span>
+    <span class="num">02 — El camino</span>
+    <h2>La hermandad</h2>
+    <p>Un espacio que estamos construyendo para los nuestros. Pronto sabrás de qué se trata.</p>
+    <span class="go">En camino<span class="soonTag">Próximamente</span></span>
+  </span>
+
+  <a class="door reveal" href="la-forja/">
+    <span class="mark" aria-hidden="true">鍛</span>
+    <span class="num">03 — Entrenamiento</span>
+    <h2>La forja</h2>
+    <p>Nuestra herramienta para estructurar tu entrenamiento, tu dieta y tu progreso. Sin ruido, solo el trabajo.</p>
+    <span class="go">Entrar
+      <svg width="26" height="10" viewBox="0 0 26 10" fill="none" aria-hidden="true"><path d="M0 5h24M20 1l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg>
+    </span>
+  </a>
+
+</main>
+
+<section class="philo">
+  <span class="kanjiGhost" aria-hidden="true">兄</span>
+  <div class="inner">
+    <span class="eyebrow reveal">La filosofía</span>
+    <h3 class="reveal">No entrenamos solos.<br><em>Nunca lo hicimos.</em></h3>
+    <p class="reveal">Kyodai significa <strong>hermanos</strong>. No es un eslogan: es la forma en que entendemos el proceso. La motivación es ruido pasajero; lo que queda cuando se apaga es la constancia, y la constancia se sostiene mejor cuando alguien camina al lado tuyo.</p>
+    <p class="reveal">Por eso esto no empezó como una marca. Empezó como una hermandad que entrena, come, falla y vuelve a intentarlo. Los suplementos, la herramienta de entrenamiento y todo lo que viene son extensiones de una sola idea: <strong>darle estructura al que decidió no rendirse.</strong></p>
+    <p class="reveal">Aquí no gritamos. Trabajamos.</p>
+  </div>
+</section>
+
+<section class="founders">
+  <div class="inner">
+    <span class="eyebrow reveal">Los creadores</span>
+    <h3 class="reveal">Dos hermanos de camino</h3>
+    <div class="fGrid">
+      <article class="fCard reveal">
+        <span class="k" aria-hidden="true">兄</span>
+        <h4>Miguel</h4>
+        <div class="role">Co-fundador</div>
+        <p>Construye la estructura: la visión de Kyodai como casa, sus productos y las herramientas que sostienen el proceso de cada hermano.</p>
+      </article>
+      <article class="fCard reveal">
+        <span class="k" aria-hidden="true">弟</span>
+        <h4>Santiago</h4>
+        <div class="role">Co-fundador</div>
+        <p>Construye la comunidad: el día a día del entrenamiento, el contenido y la voz que mantiene viva la hermandad.</p>
+      </article>
+    </div>
+    <p class="foundersNote reveal">"Empezamos entrenando juntos. Todo lo demás vino después."</p>
+  </div>
+</section>
+</div><!-- /view-home -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VISTA 2 · EL SUSTENTO (tienda de suplementos)
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-shop" class="view">
+
+<!-- NAV -->
+<nav>
+  <div class="navLeft">
+    <a href="#/" class="navBack" aria-label="Volver a la casa"><span class="jp">兄弟</span><span class="lbl">La casa</span></a>
+    <a href="#top" class="logo" data-scroll="top">
+      <span class="jp">兄弟</span>
+      <span class="lt">KYODAI</span>
+      <span class="tag">Suplementos</span>
+    </a>
+  </div>
+  <button id="cartBtn" onclick="UI.toggleCart()">Pedido <span id="cartCount">0</span></button>
+</nav>
+
+<header id="top">
+  <div class="heroKanji">兄弟</div>
+  <div class="heroLatin">KYODAI</div>
+  <div class="heroSub">Suplementos · Edición 2026</div>
+  <div class="heroQuote">"El talento se agota.<br>La constancia se alimenta."</div>
+  <div class="heroCount" id="heroCount">…</div>
+  <a href="#catalogo" class="heroCta">Ver catálogo</a>
+  <div class="heroScroll">Scroll</div>
+</header>
+
+<!-- TOOLBAR -->
+<div id="toolbar">
+  <div id="tabs"></div>
+  <div id="controls">
+    <select id="brandSel" onchange="UI.setBrand(this.value)" aria-label="Filtrar por marca"></select>
+    <select id="sortSel" onchange="UI.setSort(this.value)" aria-label="Ordenar productos">
+      <option value="feat">Destacados</option>
+      <option value="best">Más vendidos primero</option>
+      <option value="priceAsc">Precio: menor a mayor</option>
+      <option value="priceDesc">Precio: mayor a menor</option>
+      <option value="az">Nombre: A–Z</option>
+    </select>
+    <div id="groupBrand" onclick="UI.toggleGroup()" role="switch" aria-checked="false" tabindex="0"><span class="box"></span> Agrupar por marca</div>
+    <input type="search" id="q" placeholder="Buscar producto o marca…" oninput="UI.setQ(this.value)">
+  </div>
+</div>
+
+<!-- CATALOG -->
+<main id="catalogo"><div id="sections"></div></main>
+
+<!-- DRAWER -->
+<div id="overlay" onclick="UI.closeCart()"></div>
+<aside id="drawer" aria-label="Pedido">
+  <div class="dHead">
+    <div class="dTitle" id="dTitle">Tu pedido <span class="jp">注文</span></div>
+    <button class="dClose" onclick="UI.closeCart()">✕</button>
+  </div>
+  <div class="dBody" id="dBody"></div>
+  <div class="dFoot" id="dFoot"></div>
+</aside>
+
+<!-- SUMMARY MODAL -->
+<div id="summaryWrap">
+  <div class="bg" onclick="UI.backToAddress()"></div>
+  <div id="summary"></div>
+</div>
+</div><!-- /view-shop -->
+
+<!-- ═══════════════════ FOOTER ÚNICO ═══════════════════ -->
+<footer>
+  <div class="fk">兄弟</div>
+  <div class="fl">KYODAI</div>
+  <div class="fmotto">No buscamos clientes. Buscamos hermanos.</div>
+  <div class="social">
+    <a href="https://www.instagram.com/kyodai.col?igsh=MXg0b2xycWUwMThsdQ%3D%3D&amp;utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram de Kyodai">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg>
+      Instagram
+    </a>
+    <a href="https://www.tiktok.com/@kyodai.col?_r=1&amp;_t=ZS-97jOwmpG4eb" target="_blank" rel="noopener" aria-label="TikTok de Kyodai">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 2.2 1.8 3.7 4.1 3.9v3c-1.6 0-3-.5-4.1-1.3v6.6c0 3.6-2.6 6-6 6-3.2 0-5.8-2.4-5.8-5.8 0-3.3 2.6-5.9 6-5.9.3 0 .7 0 1 .1v3.1c-.3-.1-.6-.2-1-.2-1.6 0-2.9 1.3-2.9 2.9s1.3 2.8 2.9 2.8c1.7 0 2.8-1.2 2.8-3V3h3z"/></svg>
+      TikTok
+    </a>
+    <a href="mailto:kyodai.col@gmail.com" aria-label="Correo de Kyodai">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6l9 7 9-7"/></svg>
+      Correo
+    </a>
+  </div>
+  <div class="fine">兄弟 KYODAI © 2026 — Bogotá, Colombia</div>
+  <div class="fine shopOnly">Precios en pesos colombianos · Sabores según disponibilidad</div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   ROUTER DE VISTAS
+   #/            → la casa
+   #/suplementos → la tienda
+   Las anclas internas de la tienda (#top, #catalogo) hacen scroll
+   sin tocar el hash, para no perder la ruta al recargar.
+   ════════════════════════════════════════════════════════════════ */
+(function(){
+  const home = document.getElementById('view-home');
+  const shop = document.getElementById('view-shop');
+  let shopPainted = false;
+
+  const route = () => location.hash === '#/suplementos' ? 'shop' : 'home';
+
+  function show(r, scroll){
+    home.classList.toggle('on', r === 'home');
+    shop.classList.toggle('on', r === 'shop');
+    document.body.classList.toggle('shop', r === 'shop');
+    document.title = r === 'shop' ? '兄弟 KYODAI — Suplementos' : '兄弟 KYODAI — La casa';
+    /* El catálogo se pinta con IntersectionObserver: si se montó oculto,
+       se repinta la primera vez que la tienda se hace visible. */
+    if (r === 'shop' && !shopPainted && typeof renderCatalog === 'function'){
+      shopPainted = true; renderCatalog();
+    }
+    if (scroll !== false) window.scrollTo(0, 0);
+  }
+
+  addEventListener('hashchange', () => {
+    const h = location.hash;
+    if (h && h.charAt(1) !== '/') return;   // ancla interna → no cambia de vista
+    show(route());
+  });
+
+  addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('#view-shop a[href^="#"]');
+    if (!a) return;
+    const h = a.getAttribute('href');
+    if (h.charAt(1) === '/') return;        // ruta → la maneja el router
+    const t = document.getElementById(h.slice(1));
+    if (t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+
+  show(route(), false);
+})();
+</script>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   VISTA 1 · LA CASA — intro de tinta, ensō y reveals
+   (encapsulado en IIFE para no chocar con las variables de la tienda)
+   ════════════════════════════════════════════════════════════════ */
+(function(){
+/* ═══════════ SIMULACIÓN DE TINTA (canvas) ═══════════ */
+const intro=document.getElementById('intro');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cv=document.getElementById('ink'),ctx=cv.getContext('2d');
+let W,H,DPR,CX,CY;
+function size(){DPR=Math.min(devicePixelRatio||1,1.5);
+  W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;
+  cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
+  CX=W/2;CY=H/2}
+size();addEventListener('resize',size);
+
+let ps=[],running=false,dissolving=false;
+function burst(x,y,n,spread,red){
+  for(let i=0;i<n;i++){
+    const a=Math.random()*6.2832,sp=(.5+Math.random()*2.6)*spread*DPR;
+    ps.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,
+      r:(2+Math.random()*13)*DPR,life:1,dec:.0035+Math.random()*.009,
+      red:red!==undefined?red:Math.random()<.07});
+  }
+}
+function tendrils(){
+  for(let t=0;t<3;t++){
+    if(!ps.length)break;
+    const p=ps[(Math.random()*ps.length)|0];
+    if(p&&p.life>.35)burst(p.x,p.y,2,.55,p.red);
+  }
+}
+function frame(){
+  if(dissolving){ctx.fillStyle='rgba(0,0,0,.055)';ctx.fillRect(0,0,W,H)}
+  for(let i=ps.length-1;i>=0;i--){
+    const p=ps[i];
+    p.x+=p.vx;p.y+=p.vy;p.vx*=.964;p.vy*=.964;p.vy+=.0025*DPR;
+    p.r*=.9925;p.life-=p.dec;
+    if(p.life<=0||p.r<.5){ps.splice(i,1);continue}
+    const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+    const c=p.red?'168,24,41':'214,214,210';
+    g.addColorStop(0,'rgba('+c+','+(.05*p.life)+')');
+    g.addColorStop(1,'rgba('+c+',0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.2832);ctx.fill();
+  }
+  if(running||ps.length)requestAnimationFrame(frame);
+}
+
+/* ═══════════ LÍNEA DE TIEMPO ═══════════
+   La intro nunca "corta": su último cuadro (logo + KYODAI + tagline + hanko)
+   es idéntico y está alineado al hero que hay debajo. Al final, la intro solo
+   disuelve la tinta, el ensō y el grano; luego baja su opacidad y desaparece
+   sin que el logo se mueva un solo píxel. */
+const timers=[];
+function at(ms,fn){timers.push(setTimeout(fn,ms))}
+let finished=false;
+
+function play(){
+  running=true;frame();
+  at(50,  ()=>intro.classList.add('p-drop'));
+  at(680, ()=>{intro.classList.add('p-bloom');
+    burst(CX,CY,110,1.6);
+    let k=0;const iv=setInterval(()=>{
+      burst(CX+(Math.random()-.5)*90*DPR,CY+(Math.random()-.5)*90*DPR,26,1.1);
+      tendrils();
+      if(++k>13)clearInterval(iv);
+    },110);timers.push(iv);
+  });
+  at(1500,()=>intro.classList.add('p-enso'));
+  at(2050,()=>intro.classList.add('p-kanji'));
+  at(2450,()=>{dissolving=true});
+  at(2950,()=>intro.classList.add('p-hanko'));
+  at(3250,()=>intro.classList.add('p-latin'));
+  at(4700,settle);
+  at(6000,handoff);
+}
+
+/* Fase de asentamiento: se disuelven ensō, grano y tinta; el logo queda quieto */
+function settle(){
+  intro.classList.add('settle');
+  dissolving=true;
+}
+
+/* Traspaso invisible: la intro se desvanece sobre su réplica exacta (el hero) */
+function handoff(){
+  if(finished)return;finished=true;
+  timers.forEach(t=>{clearTimeout(t);clearInterval(t)});
+  running=false;
+  intro.classList.add('settle','handoff');
+  document.body.classList.remove('locked');
+  document.body.classList.add('go');
+  setTimeout(()=>{intro.classList.add('gone');intro.style.display='none'},1200);
+}
+
+/* Salto por toque: acelera al cuadro final sin romper la continuidad */
+intro.addEventListener('click',()=>{
+  intro.classList.add('p-kanji','p-hanko','p-latin');
+  settle();
+  setTimeout(handoff,150);
+});
+
+if(reduced||document.body.classList.contains("shop")){
+  intro.style.display='none';
+  document.body.classList.remove('locked');
+  document.body.classList.add('go');
+}else{
+  play();
+}
+
+/* ═══════════ Scroll reveal ═══════════ */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+</script>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   VISTA 2 · EL SUSTENTO — catálogo, carrito y flujo de pedido
+   ════════════════════════════════════════════════════════════════ */
+/* =========================================================
+   KYODAI — Datos de catálogo (Edición 2026, precios mayoristas)
+   ========================================================= */
+const SECTIONS = [
+  { id:'proteinas',   label:'Proteínas',         jp:'力', tagline:'La base de la reconstrucción.' },
+  { id:'creatinas',   label:'Creatinas',         jp:'核', tagline:'Fuerza medible, honesta, sostenida.' },
+  { id:'preentrenos', label:'Pre-entrenos',      jp:'火', tagline:'La chispa antes del silencio.' },
+  { id:'aminoacidos', label:'Aminoácidos',       jp:'流', tagline:'Recuperación entre batallas.' },
+  { id:'quemadores',  label:'Quemadores',        jp:'刃', tagline:'Definición sin atajos.' },
+  { id:'salud',       label:'Vitaminas & Salud', jp:'守', tagline:'El cuerpo se cuida entre hermanos.' },
+  { id:'otros',       label:'Complementos',      jp:'道', tagline:'Cada detalle del camino.' },
+];
+const SECTION_JP = Object.fromEntries(SECTIONS.map(s=>[s.id,s.jp]));
+
+const PRODUCTS = [{"brand":"Dymatize","name":"ELITE CASEIN","section":"proteinas","sub":"Caseína","variants":[{"pres":"2 Libras","price":272900},{"pres":"4 Libras","price":430000}],"id":"proteinas-2"},{"brand":"Dymatize","name":"SUPER MASS GAINER","section":"proteinas","sub":"Gainer","variants":[{"pres":"6 Libras","price":250000},{"pres":"12 Libras","price":416900}],"id":"proteinas-3"},{"brand":"Fit Mafia","name":"VIGA","section":"proteinas","sub":"Gainer","variants":[{"pres":"2 Libras","price":63900},{"pres":"7 Libras","price":201000}],"id":"proteinas-4"},{"brand":"GMN","name":"MEGA GAINER","section":"proteinas","sub":"Gainer","variants":[{"pres":"2 Libras","price":72000},{"pres":"5 Libras","price":170000},{"pres":"10 Libras","price":279000}],"id":"proteinas-5"},{"brand":"GMN","name":"SUPER MEGA GAINER","section":"proteinas","sub":"Gainer","variants":[{"pres":"2 Libras","price":64900},{"pres":"5 Libras","price":149000},{"pres":"10 Libras","price":255000}],"id":"proteinas-6"},{"brand":"Healthy Sports","name":"BARBARUS","section":"proteinas","sub":"Gainer","variants":[{"pres":"2 Libras","price":149900},{"pres":"4 Libras","price":255900}],"id":"proteinas-7"},{"brand":"IMN Nutrition","name":"WHEY OF GAIN","section":"proteinas","sub":"Gainer","variants":[{"pres":"3 Libras","price":120000},{"pres":"6 Libras","price":189000}],"id":"proteinas-8"},{"brand":"MuscleMeds","name":"CARNIVOR MASS","section":"proteinas","sub":"Gainer de res","variants":[{"pres":"6 Libras","price":340000},{"pres":"10 Libras","price":502000},{"pres":"15 Libras","price":591900}],"id":"proteinas-9"},{"brand":"MuscleTech","name":"MASSTECH","section":"proteinas","sub":"Gainer","variants":[{"pres":"6 Libras","price":320000},{"pres":"12 Libras","price":445900},{"pres":"20 Libras","price":607900}],"id":"proteinas-10"},{"brand":"Nuspro","name":"SOYBIG","section":"proteinas","sub":"Gainer vegetal","variants":[{"pres":"4 Libras","price":109000}],"id":"proteinas-11"},{"brand":"Nutramerican-Megaplex","name":"BIPRO MASS","section":"proteinas","sub":"Gainer","variants":[{"pres":"3 Libras","price":230000}],"id":"proteinas-12"},{"brand":"Nutramerican-Megaplex","name":"MEGAPLEX CREATINE POWER","section":"proteinas","sub":"Gainer + creatina","variants":[{"pres":"2 Libras","price":80900},{"pres":"10 Libras","price":290000}],"id":"proteinas-13"},{"brand":"Optimum Nutrition","name":"SERIOUS MASS","section":"proteinas","sub":"Gainer","variants":[{"pres":"6 Libras","price":250000},{"pres":"12 Libras","price":440900}],"badge":"Más vendido","id":"proteinas-14"},{"brand":"ProScience","name":"SMART GAINER","section":"proteinas","sub":"Gainer","variants":[{"pres":"3 Libras","price":100000},{"pres":"6 Libras","price":175000},{"pres":"13 Libras","price":344000}],"id":"proteinas-15"},{"brand":"Smart Muscle","name":"PROTON + GAINER","section":"proteinas","sub":"Gainer","variants":[{"pres":"3 Libras","price":95000},{"pres":"6 Libras","price":177000}],"id":"proteinas-16"},{"brand":"Smart Nutrition","name":"MASS EVOLUTION","section":"proteinas","sub":"Gainer","variants":[{"pres":"2 Libras","price":47000},{"pres":"4 Libras","price":80500},{"pres":"10 Libras","price":172900}],"id":"proteinas-17"},{"brand":"Supra","name":"GAINER","section":"proteinas","sub":"Gainer","variants":[{"pres":"4 Libras","price":125900}],"id":"proteinas-18"},{"brand":"Supra","name":"MASS GAINER","section":"proteinas","sub":"Gainer","variants":[{"pres":"2 Libras","price":78900},{"pres":"5 Libras","price":125900}],"id":"proteinas-19"},{"brand":"TNT Neopharma","name":"TNT MEGA MASS","section":"proteinas","sub":"Gainer","variants":[{"pres":"3 Libras","price":89500},{"pres":"6 Libras","price":152900},{"pres":"10 Libras","price":245900}],"id":"proteinas-20"},{"brand":"Vitanas","name":"TITAN ARMY","section":"proteinas","sub":"Gainer","variants":[{"pres":"2 Libras","price":68000},{"pres":"5 Libras","price":125000},{"pres":"12 Libras","price":235000}],"id":"proteinas-21"},{"brand":"MuscleMeds","name":"CARNIVOR","section":"proteinas","sub":"Proteína de res","variants":[{"pres":"2 Libras","price":225000},{"pres":"4 Libras","price":347900},{"pres":"8 Libras","price":556900}],"id":"proteinas-22"},{"brand":"Vitanas","name":"TITAN BEEF MASS","section":"proteinas","sub":"Gainer de res","variants":[{"pres":"2 Libras","price":68000},{"pres":"5 Libras","price":140000}],"id":"proteinas-23"},{"brand":"BSN","name":"SYNTHA 6","section":"proteinas","sub":"Proteína de mezcla","variants":[{"pres":"5 Libras","price":350000},{"pres":"10 Libras","price":640000}],"badge":"Más vendido","id":"proteinas-24"},{"brand":"Dymatize","name":"ELITE WHEY","section":"proteinas","sub":"Whey","variants":[{"pres":"5 Libras","price":410000}],"id":"proteinas-25"},{"brand":"Dymatize","name":"ISO 100","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"1,3 Libras","price":240000},{"pres":"3 Libras","price":410000},{"pres":"5 Libras","price":560000}],"badge":"Más vendido","id":"proteinas-26"},{"brand":"Fit Mafia","name":"LA WEY","section":"proteinas","sub":"Whey","variants":[{"pres":"26 Servicios","price":119900}],"id":"proteinas-27"},{"brand":"GMN","name":"BE ONE","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":178000},{"pres":"3 Libras","price":259900}],"id":"proteinas-28"},{"brand":"GMN","name":"BODY RIPPED","section":"proteinas","sub":"Whey definición","variants":[{"pres":"2 Libras","price":113000}],"id":"proteinas-29"},{"brand":"GMN","name":"NITRO MASS","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":110000},{"pres":"5 Libras","price":250000}],"id":"proteinas-30"},{"brand":"Healthy Sports","name":"ISO WHEY","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"1 Libra","price":170000},{"pres":"2,1 Libras","price":240000},{"pres":"4,5 Libras","price":413900}],"id":"proteinas-31"},{"brand":"Isopure","name":"ISOPURE","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"3 Libras","price":420000}],"id":"proteinas-32"},{"brand":"MuscleTech","name":"ISO WHEY","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"2 Libras","price":157900},{"pres":"5 Libras","price":405900}],"id":"proteinas-33"},{"brand":"MuscleTech","name":"NITROTECH","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":205000},{"pres":"4 Libras","price":338000},{"pres":"10 Libras","price":620000}],"badge":"Más vendido","id":"proteinas-34"},{"brand":"MuscleTech","name":"NITROTECH 100% WHEY GOLD","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":205000},{"pres":"5 Libras","price":420000}],"id":"proteinas-35"},{"brand":"MuscleTech","name":"NITROTECH RIPPED","section":"proteinas","sub":"Whey definición","variants":[{"pres":"4 Libras","price":390000}],"id":"proteinas-36"},{"brand":"Nuspro","name":"SOYPRO ISOLATE","section":"proteinas","sub":"Proteína vegetal","variants":[{"pres":"2,2 Libras","price":115900}],"id":"proteinas-37"},{"brand":"Nuspro","name":"WHEY GOLD","section":"proteinas","sub":"Whey","variants":[{"pres":"3 Libras","price":172000}],"id":"proteinas-38"},{"brand":"Nutramerican-Megaplex","name":"BIPRO CLASSIC","section":"proteinas","sub":"Whey","variants":[{"pres":"1 Libra","price":115000},{"pres":"2 Libras","price":230000},{"pres":"3 Libras","price":310000}],"id":"proteinas-39"},{"brand":"Nutramerican-Megaplex","name":"BIPRO CLASSIC CAJA","section":"proteinas","sub":"Whey en sobres","variants":[{"pres":"18 Servicios","price":124000}],"id":"proteinas-40"},{"brand":"Nutramerican-Megaplex","name":"BIPRO LITE","section":"proteinas","sub":"Whey ligera","variants":[{"pres":"2,4 Libras","price":230000}],"id":"proteinas-41"},{"brand":"Nutramerican-Megaplex","name":"BIPRO RIPPED","section":"proteinas","sub":"Whey definición","variants":[{"pres":"2,4 Libras","price":230000}],"id":"proteinas-42"},{"brand":"Nutramerican-Megaplex","name":"ISO CLEAN","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"2 Libras","price":240000}],"id":"proteinas-43"},{"brand":"Optimum Nutrition","name":"100% WHEY GOLD STANDARD","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":248000},{"pres":"5 Libras","price":440900},{"pres":"10 Libras","price":790000}],"badge":"Más vendido","id":"proteinas-44"},{"brand":"Optimum Nutrition","name":"GOLD STANDARD ISOLATE","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"3 Libras","price":410000},{"pres":"5 Libras","price":561900}],"id":"proteinas-45"},{"brand":"ProScience","name":"BEST PROTEIN","section":"proteinas","sub":"Whey","variants":[{"pres":"1 Libra","price":110000},{"pres":"2 Libras","price":215000},{"pres":"4 Libras","price":385000}],"id":"proteinas-46"},{"brand":"ProScience","name":"BEST WHEY","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":155000}],"id":"proteinas-47"},{"brand":"ProScience","name":"ISO BEST","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"2 Libras","price":260000}],"id":"proteinas-48"},{"brand":"ProScience","name":"SACHET BEST PROTEIN","section":"proteinas","sub":"Whey en sobre","variants":[{"pres":"Unidad","price":8500}],"id":"proteinas-49"},{"brand":"Smart Muscle","name":"PROTON WHEY","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":177000},{"pres":"4 Libras","price":317000}],"id":"proteinas-50"},{"brand":"Smart Nutrition","name":"WHEY PURE","section":"proteinas","sub":"Whey","variants":[{"pres":"1 Libra","price":98900},{"pres":"2 Libras","price":185900},{"pres":"5 Libras","price":420900}],"id":"proteinas-51"},{"brand":"Supra","name":"ISO WHEY","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"2 Libras","price":215900},{"pres":"5 Libras","price":410900}],"id":"proteinas-52"},{"brand":"Supra","name":"WHEY PLATINUM","section":"proteinas","sub":"Whey","variants":[{"pres":"3 Libras","price":200900},{"pres":"5 Libras","price":279900}],"id":"proteinas-53"},{"brand":"Supra","name":"WHEY PRO","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":179900},{"pres":"5 Libras","price":379000}],"id":"proteinas-54"},{"brand":"Supra","name":"WHEY PRO-F","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":179900}],"id":"proteinas-55"},{"brand":"TNT Neopharma","name":"HIGH STANDARD WHEY","section":"proteinas","sub":"Whey","variants":[{"pres":"3 Libras","price":188900}],"id":"proteinas-56"},{"brand":"TNT Neopharma","name":"ISO FIT","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"2 Libras","price":185900},{"pres":"4 Libras","price":345500}],"id":"proteinas-57"},{"brand":"Vitanas","name":"ISOLATE GOURMET","section":"proteinas","sub":"Whey aislada","variants":[{"pres":"2 Libras","price":220000},{"pres":"5 Libras","price":450000}],"id":"proteinas-58"},{"brand":"Vitanas","name":"WHEY ELITE","section":"proteinas","sub":"Whey","variants":[{"pres":"2 Libras","price":170000},{"pres":"5 Libras","price":360000}],"id":"proteinas-59"},{"brand":"Nutramerican-Megaplex","name":"NUTRA VEGAN PROTEIN","section":"proteinas","sub":"Proteína vegana","variants":[{"pres":"400 Gramos","price":69900}],"id":"proteinas-60"},{"brand":"ProScience","name":"BEST VEGAN","section":"proteinas","sub":"Proteína vegana","variants":[{"pres":"2 Libras","price":130000}],"id":"proteinas-61"},{"brand":"Supra","name":"VEGAN PROTEIN","section":"proteinas","sub":"Proteína vegana","variants":[{"pres":"2 Libras","price":145900}],"id":"proteinas-62"},{"brand":"Dynamic","name":"CREATINA CR7INE","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"450 Gramos","price":70000}],"id":"creatinas-1"},{"brand":"Fit Mafia","name":"LEGEND","section":"creatinas","sub":"Creatina","variants":[{"pres":"30 Servicios","price":79900},{"pres":"50 Servicios","price":125000}],"id":"creatinas-2"},{"brand":"Fit Mafia","name":"SHAKER MICRODOSIS","section":"creatinas","sub":"Accesorio","variants":[{"pres":"Unidad","price":70000}],"id":"creatinas-3"},{"brand":"GMN","name":"CREATINA MONOHIDRATO","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"300 Gramos","price":102000}],"id":"creatinas-4"},{"brand":"Healthy Sports","name":"CREATINE MONOHYDRATE","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"150 Gramos","price":70000},{"pres":"300 Gramos","price":125000}],"id":"creatinas-5"},{"brand":"IMN Nutrition","name":"CREATINE","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"50 Servicios","price":70900},{"pres":"133 Servicios","price":149900}],"id":"creatinas-6"},{"brand":"MuscleTech","name":"CELLTECH","section":"creatinas","sub":"Creatina + carbos","variants":[{"pres":"3 Libras","price":178000},{"pres":"6 Libras","price":267000}],"id":"creatinas-7"},{"brand":"MuscleTech","name":"CREATINA PLATINUM","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"400 Gramos","price":160000}],"id":"creatinas-8"},{"brand":"Nutramerican-Megaplex","name":"CAJA CREA STACK","section":"creatinas","sub":"Creatina en sobres","variants":[{"pres":"25 Unidades","price":135000}],"id":"creatinas-9"},{"brand":"Nutramerican-Megaplex","name":"CREA STACK","section":"creatinas","sub":"Creatina","variants":[{"pres":"60 Servicios","price":145000}],"id":"creatinas-10"},{"brand":"Nutrex","name":"CREATINE","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"300 Gramos","price":98000}],"id":"creatinas-11"},{"brand":"Optimum Nutrition","name":"CREATINE","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"300 Gramos","price":145000},{"pres":"600 Gramos","price":201000}],"badge":"Más vendido","id":"creatinas-12"},{"brand":"ProScience","name":"LEGACY","section":"creatinas","sub":"Creatina","variants":[{"pres":"30 Servicios","price":85000},{"pres":"50 Servicios","price":135000}],"id":"creatinas-13"},{"brand":"ProScience","name":"LEGACY PLUS","section":"creatinas","sub":"Creatina","variants":[{"pres":"30 Servicios","price":105000},{"pres":"50 Servicios","price":155000}],"id":"creatinas-14"},{"brand":"Smart Muscle","name":"ATOMIC","section":"creatinas","sub":"Creatina","variants":[{"pres":"30 Servicios","price":100900}],"id":"creatinas-15"},{"brand":"Smart Muscle","name":"ATOMIC MONOHIDRATO","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"60 Servicios","price":115000}],"id":"creatinas-16"},{"brand":"Smart Muscle","name":"ATOMIC X SACHETS","section":"creatinas","sub":"Creatina en sobres","variants":[{"pres":"30 Servicios","price":108000}],"id":"creatinas-17"},{"brand":"Supra","name":"CRE HCL","section":"creatinas","sub":"Creatina HCL","variants":[{"pres":"150 Gramos","price":50900}],"id":"creatinas-18"},{"brand":"Supra","name":"CRE MONOHIDRATADA","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"300 Gramos","price":50900},{"pres":"600 Gramos","price":89900}],"id":"creatinas-19"},{"brand":"TNT Neopharma","name":"CREA-TINE COMPLEX","section":"creatinas","sub":"Creatina","variants":[{"pres":"450 Gramos","price":109900}],"id":"creatinas-20"},{"brand":"TNT Neopharma","name":"CREATINA TNT INSTINCT","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"240 Gramos","price":68900},{"pres":"480 Gramos","price":115900}],"id":"creatinas-21"},{"brand":"Vitanas","name":"CAJA CREAKORE","section":"creatinas","sub":"Creatina en sobres","variants":[{"pres":"30 Servicios","price":120000}],"id":"creatinas-22"},{"brand":"Vitanas","name":"CREATINE","section":"creatinas","sub":"Monohidrato","variants":[{"pres":"150 Gramos","price":68000},{"pres":"300 Gramos","price":102000}],"id":"creatinas-24"},{"brand":"MuscleTech","name":"CELLTECH CREACTOR","section":"creatinas","sub":"Creatina HCL","variants":[{"pres":"120 Servicios","price":148000}],"id":"creatinas-25"},{"brand":"IMN Nutrition","name":"INSANITY","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":104900}],"id":"preentrenos-1"},{"brand":"Nutramerican-Megaplex","name":"NITRO SHOCK","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"22 Servicios","price":99900}],"id":"preentrenos-2"},{"brand":"Nutramerican-Megaplex","name":"RADICAL POWER","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"18 Unidades","price":89900}],"id":"preentrenos-3"},{"brand":"Smart Nutrition","name":"PUMP-NOX EDGE","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":115000}],"id":"preentrenos-4"},{"brand":"TNT Neopharma","name":"PARANOIA","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":110900}],"id":"preentrenos-5"},{"brand":"BSN","name":"NO XPLODE","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":150000},{"pres":"60 Servicios","price":253000}],"id":"preentrenos-6"},{"brand":"Cellucor","name":"C4 ORIGINAL","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":130000},{"pres":"60 Servicios","price":190000}],"badge":"Más vendido","id":"preentrenos-7"},{"brand":"Cellucor","name":"C4 RIPPED","section":"preentrenos","sub":"Pre-entreno definición","variants":[{"pres":"30 Servicios","price":150000}],"id":"preentrenos-8"},{"brand":"Cellucor","name":"LATA C4 ORIGINAL","section":"preentrenos","sub":"Bebida lista","variants":[{"pres":"Unidad","price":22000}],"id":"preentrenos-9"},{"brand":"Fit Mafia","name":"PASE","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":104900}],"id":"preentrenos-10"},{"brand":"Healthy Sports","name":"BETA ALANINA 3200 MG","section":"preentrenos","sub":"Beta alanina","variants":[{"pres":"120 Cápsulas","price":76900}],"id":"preentrenos-11"},{"brand":"Healthy Sports","name":"NUCLEAR","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"180 Gramos","price":97900},{"pres":"360 Gramos","price":165900}],"id":"preentrenos-12"},{"brand":"IMN Nutrition","name":"ULTIMATE","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":124900}],"id":"preentrenos-13"},{"brand":"Nutramerican-Megaplex","name":"ENERGY X","section":"preentrenos","sub":"Energizante","variants":[{"pres":"25 Sobres","price":33900}],"id":"preentrenos-14"},{"brand":"Nutramerican-Megaplex","name":"LATA MYTH","section":"preentrenos","sub":"Bebida lista","variants":[{"pres":"Unidad","price":8900}],"id":"preentrenos-15"},{"brand":"ProScience","name":"INTENZE","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"14 Servicios","price":98000},{"pres":"30 Servicios","price":145000}],"id":"preentrenos-16"},{"brand":"ProScience","name":"INTENZE SACHET","section":"preentrenos","sub":"Pre-entreno en sobre","variants":[{"pres":"Unidad","price":6500}],"id":"preentrenos-17"},{"brand":"ProScience","name":"LATA INTENZE READY","section":"preentrenos","sub":"Bebida lista","variants":[{"pres":"Unidad","price":9900}],"id":"preentrenos-18"},{"brand":"ProScience","name":"LATA INTENZE VITALITY","section":"preentrenos","sub":"Bebida lista","variants":[{"pres":"Unidad","price":9900}],"id":"preentrenos-19"},{"brand":"Smart Muscle","name":"ELECTRON","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"30 Servicios","price":119900}],"id":"preentrenos-20"},{"brand":"Smart Muscle","name":"ELECTRON X SACHETS","section":"preentrenos","sub":"Pre-entreno en sobres","variants":[{"pres":"30 Servicios","price":133900}],"id":"preentrenos-21"},{"brand":"Supra","name":"ENERGY BRUN","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"330 Gramos","price":104900}],"id":"preentrenos-22"},{"brand":"Supra","name":"PRE ENERGY","section":"preentrenos","sub":"Pre-entreno","variants":[{"pres":"150 Gramos","price":59900},{"pres":"330 Gramos","price":110900}],"id":"preentrenos-23"},{"brand":"BSN","name":"AMINO X","section":"aminoacidos","sub":"Aminoácidos","variants":[{"pres":"30 Servicios","price":135000},{"pres":"70 Servicios","price":230000}],"id":"aminoacidos-1"},{"brand":"Fit Mafia","name":"COYOTE","section":"aminoacidos","sub":"Aminoácidos","variants":[{"pres":"50 Servicios","price":59500}],"id":"aminoacidos-2"},{"brand":"Fit Mafia","name":"COYOTE LIQUIDO","section":"aminoacidos","sub":"Bebida lista","variants":[{"pres":"Unidad","price":7900}],"id":"aminoacidos-3"},{"brand":"GMN","name":"AMINO POWDER","section":"aminoacidos","sub":"Aminoácidos","variants":[{"pres":"200 Gramos","price":57900}],"id":"aminoacidos-4"},{"brand":"Healthy Sports","name":"BCAA 2400 MG","section":"aminoacidos","sub":"BCAA","variants":[{"pres":"90 Servicios","price":72900}],"id":"aminoacidos-5"},{"brand":"Healthy Sports","name":"BCAA 384 G","section":"aminoacidos","sub":"BCAA","variants":[{"pres":"Unidad","price":141900}],"id":"aminoacidos-6"},{"brand":"IMN Nutrition","name":"BCAA 2:1:1","section":"aminoacidos","sub":"BCAA","variants":[{"pres":"30 Servicios","price":109900}],"id":"aminoacidos-7"},{"brand":"Optimum Nutrition","name":"AMINO ENERGY + HIDRATACIÓN","section":"aminoacidos","sub":"Aminoácidos","variants":[{"pres":"30 Servicios","price":135000}],"id":"aminoacidos-8"},{"brand":"Optimum Nutrition","name":"LATA AMINO ENERGY","section":"aminoacidos","sub":"Bebida lista","variants":[{"pres":"Unidad","price":15900}],"id":"aminoacidos-9"},{"brand":"Smart Nutrition","name":"SMART STACK","section":"aminoacidos","sub":"Aminoácidos","variants":[{"pres":"30 Servicios","price":83000}],"id":"aminoacidos-10"},{"brand":"Supra","name":"AMINO GOLD","section":"aminoacidos","sub":"Aminoácidos","variants":[{"pres":"450 Gramos","price":110900}],"id":"aminoacidos-11"},{"brand":"Supra","name":"BCAA + GLUTAMINA","section":"aminoacidos","sub":"BCAA + glutamina","variants":[{"pres":"330 Gramos","price":85900}],"id":"aminoacidos-12"},{"brand":"TNT Neopharma","name":"AMINO 100","section":"aminoacidos","sub":"Aminoácidos","variants":[{"pres":"450 Gramos","price":110900}],"id":"aminoacidos-13"},{"brand":"Nutramerican-Megaplex","name":"GLUTA STACK","section":"aminoacidos","sub":"Glutamina","variants":[{"pres":"30 Servicios","price":67900}],"id":"aminoacidos-14"},{"brand":"Healthy Sports","name":"L-CARNITINA 1000MG","section":"quemadores","sub":"L-carnitina","variants":[{"pres":"60 Servicios","price":87900}],"id":"quemadores-2"},{"brand":"Healthy Sports","name":"L-CARNITINA LIQUIDA","section":"quemadores","sub":"L-carnitina","variants":[{"pres":"1500 Mg","price":81900},{"pres":"3000 Mg","price":103900}],"id":"quemadores-3"},{"brand":"MuscleTech","name":"HYDROXYCUT ELITE","section":"quemadores","sub":"Termogénico","variants":[{"pres":"100 Cápsulas","price":115000}],"id":"quemadores-4"},{"brand":"Nutramerican-Megaplex","name":"BURNER STACK","section":"quemadores","sub":"Termogénico","variants":[{"pres":"60 Servicios","price":135000}],"id":"quemadores-5"},{"brand":"Nutramerican-Megaplex","name":"CAJA BURNER STACK","section":"quemadores","sub":"Termogénico en sobres","variants":[{"pres":"50 Unidades","price":119900}],"id":"quemadores-6"},{"brand":"Nutramerican-Megaplex","name":"LATA BURNER STACK","section":"quemadores","sub":"Bebida lista","variants":[{"pres":"Unidad","price":7900}],"id":"quemadores-7"},{"brand":"Healthy America","name":"B-COMPLEX + B12","section":"salud","sub":"Vitaminas B","variants":[{"pres":"90 Tabletas","price":50900}],"id":"salud-1"},{"brand":"Healthy America","name":"BIOTINA 900MCG","section":"salud","sub":"Biotina","variants":[{"pres":"30 Tabletas","price":26900},{"pres":"120 Tabletas","price":51900}],"id":"salud-2"},{"brand":"Healthy America","name":"CAL-MAG-ZINC + VD3","section":"salud","sub":"Minerales","variants":[{"pres":"90 Tabletas","price":65900}],"id":"salud-3"},{"brand":"Healthy America","name":"COLAGENO + VITAMINA C","section":"salud","sub":"Colágeno","variants":[{"pres":"60 Tabletas","price":51900},{"pres":"100 Tabletas","price":78900}],"id":"salud-4"},{"brand":"Healthy America","name":"MAX FOR MEN","section":"salud","sub":"Multivitamínico","variants":[{"pres":"60 Tabletas","price":90900}],"id":"salud-5"},{"brand":"Healthy America","name":"MELATONINA 3MG","section":"salud","sub":"Descanso","variants":[{"pres":"120 Tabletas","price":54900}],"id":"salud-6"},{"brand":"Healthy America","name":"OMEGA 3 1200MG","section":"salud","sub":"Omega 3","variants":[{"pres":"60 Tabletas","price":51900},{"pres":"100 Tabletas","price":72900},{"pres":"200 Tabletas","price":124900}],"id":"salud-7"},{"brand":"Healthy America","name":"PICOLINATO DE CROMO 500MG","section":"salud","sub":"Minerales","variants":[{"pres":"100 Cápsulas","price":54900}],"id":"salud-8"},{"brand":"Healthy America","name":"POTASIO 99MG","section":"salud","sub":"Minerales","variants":[{"pres":"60 Cápsulas","price":53900}],"id":"salud-9"},{"brand":"Healthy America","name":"SUPER MAGNESIO","section":"salud","sub":"Magnesio","variants":[{"pres":"100 Cápsulas","price":85900}],"id":"salud-10"},{"brand":"Healthy America","name":"TRIPLE OMEGA 3-6-9","section":"salud","sub":"Omegas","variants":[{"pres":"60 Cápsulas","price":65900},{"pres":"120 Cápsulas","price":100900}],"id":"salud-11"},{"brand":"Healthy America","name":"VITA C 1000MG + ZINC","section":"salud","sub":"Vitamina C","variants":[{"pres":"100 Cápsulas","price":67900}],"id":"salud-12"},{"brand":"Healthy America","name":"VITAMINA D3","section":"salud","sub":"Vitamina D","variants":[{"pres":"100 Cápsulas","price":54900}],"id":"salud-13"},{"brand":"Healthy America","name":"VITAMINA E 1000 IU","section":"salud","sub":"Vitamina E","variants":[{"pres":"60 Cápsulas","price":90900},{"pres":"100 Cápsulas","price":121900}],"id":"salud-14"},{"brand":"IMN Nutrition","name":"MULTIMN","section":"salud","sub":"Multivitamínico","variants":[{"pres":"30 Servicios","price":69900}],"id":"salud-15"},{"brand":"Nutramerican-Megaplex","name":"COLLAGEN STACK","section":"salud","sub":"Colágeno","variants":[{"pres":"585 Gramos","price":104900}],"id":"salud-16"},{"brand":"Nutramerican-Megaplex","name":"NUTRA-C","section":"salud","sub":"Vitamina C","variants":[{"pres":"200 Servicios","price":69900}],"id":"salud-17"},{"brand":"ProScience","name":"OMEGA 3","section":"salud","sub":"Omega 3","variants":[{"pres":"120 Cápsulas","price":77000}],"id":"salud-18"},{"brand":"ProScience","name":"SHIELD","section":"salud","sub":"Defensas","variants":[{"pres":"30 Servicios","price":97000}],"id":"salud-19"},{"brand":"ProScience","name":"THE ONE","section":"salud","sub":"Multivitamínico","variants":[{"pres":"30 Servicios","price":90000}],"id":"salud-20"},{"brand":"Healthy Sports","name":"TEST HD","section":"salud","sub":"Soporte hormonal","variants":[{"pres":"60 Servicios","price":72900}],"id":"salud-21"},{"brand":"Nutramerican-Megaplex","name":"MEGA CARBS","section":"otros","sub":"Carbohidratos","variants":[{"pres":"2 Libras","price":81900}],"id":"otros-1"},{"brand":"Supra","name":"SUPRA CARBS","section":"otros","sub":"Carbohidratos","variants":[{"pres":"20 Servicios","price":120000}],"id":"otros-2"},{"brand":"Supra","name":"PROTEIN PANCAKE","section":"otros","sub":"Alimento proteico","variants":[{"pres":"2 Libras","price":70900}],"id":"otros-3"}];
+
+/* ---------- Fotos de producto ----------
+   Biblioteca local: ./kyodai-suplementos/<marca>/<categoria>/<producto>/
+   IMG_BASE es relativo, así que funciona igual abriendo el archivo en el
+   navegador y publicado en GitHub Pages (sube la carpeta junto al HTML).
+   Cada entrada: p = ruta de la imagen · cut = 1 si es recorte transparente
+   (se muestra completa con aire en vez de a sangre completa).
+   Si un producto no tiene foto, se muestra el emblema tipográfico. */
+const IMG_BASE = "kyodai-suplementos/";
+const PRODUCT_IMAGES = {
+ "aminoacidos-1": {"p":"bsn/aminoacidos/amino-x-30-servicios/amino-x-30-servicios.png","cut":1},
+ "aminoacidos-2": {"p":"fit-mafia/pre-entrenos/coyote/coyote.png","cut":1},
+ "aminoacidos-3": {"p":"fit-mafia/pre-entrenos/coyote-liquido/coyote-liquido.png","cut":1},
+ "aminoacidos-4": {"p":"gmn/aminoacidos/amino-powder/amino-powder.png","cut":1},
+ "aminoacidos-5": {"p":"healthy-sports/aminoacidos/bcaa-2400mg/bcaa-2400mg.png","cut":1},
+ "aminoacidos-6": {"p":"healthy-sports/aminoacidos/bcaa-384g/bcaa-384g.png","cut":1},
+ "aminoacidos-7": {"p":"imn-nutrition/aminoacidos/bcaa-2-1-1/bcaa-2-1-1.png","cut":1},
+ "aminoacidos-8": {"p":"optimum-nutrition/aminoacidos/amino-energy-hidratacion/amino-energy-hidratacion.png","cut":1},
+ "aminoacidos-9": {"p":"optimum-nutrition/aminoacidos/lata-amino-energy/lata-amino-energy.png","cut":1},
+ "aminoacidos-10": {"p":"smart-nutrition/creatinas/smart-stack/smart-stack.png","cut":1},
+ "aminoacidos-11": {"p":"supra/aminoacidos/amino-gold/amino-gold.png","cut":1},
+ "aminoacidos-12": {"p":"supra/aminoacidos/bcaa-glutamina/bcaa-glutamina.png","cut":1},
+ "aminoacidos-13": {"p":"tnt-neopharma/aminoacidos/amino-100/amino-100-render.png"},
+ "aminoacidos-14": {"p":"nutramerican-megaplex/aminoacidos/gluta-stack/gluta-stack.png","cut":1},
+ "creatinas-1": {"p":"dynamic/creatinas/cr7ine/cr7ine.png","cut":1},
+ "creatinas-2": {"p":"fit-mafia/creatinas/legend/legend.png","cut":1},
+ "creatinas-3": {"p":"fit-mafia/creatinas/shaker-microdosis/shaker-microdosis.png","cut":1},
+ "creatinas-4": {"p":"gmn/creatinas/creatina-monohidrato/creatina-monohidrato-render.png"},
+ "creatinas-5": {"p":"healthy-sports/creatinas/creatine-monohydrate/creatine-monohydrate.png","cut":1},
+ "creatinas-6": {"p":"imn-nutrition/creatinas/creatine-50-servicios/creatine-50-servicios.png","cut":1},
+ "creatinas-7": {"p":"muscletech/creatinas/celltech-3lb/celltech-3lb.png","cut":1},
+ "creatinas-8": {"p":"muscletech/creatinas/creatina-platinum/creatina-platinum-render.png"},
+ "creatinas-9": {"p":"nutramerican-megaplex/creatinas/caja-crea-stack/caja-crea-stack.png","cut":1},
+ "creatinas-10": {"p":"nutramerican-megaplex/creatinas/crea-stack/crea-stack.png","cut":1},
+ "creatinas-11": {"p":"nutrex/creatinas/creatine-monohydrate/creatine-monohydrate.png","cut":1},
+ "creatinas-12": {"p":"optimum-nutrition/creatinas/micronized-creatine/micronized-creatine.png","cut":1},
+ "creatinas-13": {"p":"proscience/pre-entrenos/legacy/legacy.png","cut":1},
+ "creatinas-14": {"p":"proscience/pre-entrenos/legacy/legacy.png","cut":1},
+ "creatinas-15": {"p":"smart-muscle/creatinas/atomic/atomic.png","cut":1},
+ "creatinas-16": {"p":"smart-muscle/creatinas/atomic-monohidrato/atomic-monohidrato.png","cut":1},
+ "creatinas-17": {"p":"smart-muscle/creatinas/atomic-x-sachets/atomic-x-sachets.png","cut":1},
+ "creatinas-18": {"p":"supra/creatinas/cre-hcl/cre-hcl-render.png"},
+ "creatinas-19": {"p":"supra/creatinas/cre-monohidratada-300g/cre-monohidratada-300g.png","cut":1},
+ "creatinas-20": {"p":"tnt-neopharma/creatinas/crea-tine-complex-450g/crea-tine-complex-450g.png","cut":1},
+ "creatinas-21": {"p":"tnt-neopharma/creatinas/instinct-240g/instinct-240g.png","cut":1},
+ "creatinas-22": {"p":"vitanas/creatinas/caja-creakore/caja-creakore-render.png"},
+ "creatinas-24": {"p":"vitanas/creatinas/creatine/creatine.png","cut":1},
+ "creatinas-25": {"p":"muscletech/creatinas/celltech-creactor/celltech-creactor.png","cut":1},
+ "otros-1": {"p":"nutramerican-megaplex/carbohidratos/mega-carbs/mega-carbs.png","cut":1},
+ "otros-2": {"p":"supra/carbohidratos/supra-carbs/supra-carbs.png","cut":1},
+ "otros-3": {"p":"supra/alimentos/protein-pancake/protein-pancake.png","cut":1},
+ "preentrenos-1": {"p":"imn-nutrition/pre-entrenos/insanity/insanity-render.png"},
+ "preentrenos-2": {"p":"nutramerican-megaplex/pre-entrenos/nitro-shock/nitro-shock-render.png"},
+ "preentrenos-3": {"p":"nutramerican-megaplex/pre-entrenos/radical-power/radical-power-render.png"},
+ "preentrenos-4": {"p":"smart-nutrition/pre-entrenos/pump-nox-edge/pump-nox-edge-render.png"},
+ "preentrenos-5": {"p":"tnt-neopharma/pre-entrenos/paranoia/paranoia-render.png"},
+ "preentrenos-6": {"p":"bsn/pre-entrenos/no-xplode/no-xplode-render.png"},
+ "preentrenos-7": {"p":"cellucor/pre-entrenos/c4-original/c4-original-render.png"},
+ "preentrenos-8": {"p":"cellucor/pre-entrenos/c4-ripped/c4-ripped-render.png"},
+ "preentrenos-9": {"p":"cellucor/pre-entrenos/lata-c4-original/lata-c4-original-render.png"},
+ "preentrenos-10": {"p":"fit-mafia/pre-entrenos/pase/pase-render.png"},
+ "preentrenos-11": {"p":"healthy-sports/pre-entrenos/beta-alanina-3200mg/beta-alanina-3200mg-render.png"},
+ "preentrenos-12": {"p":"healthy-sports/pre-entrenos/nuclear/nuclear-render.png"},
+ "preentrenos-13": {"p":"imn-nutrition/pre-entrenos/ultimate/ultimate-render.png"},
+ "preentrenos-14": {"p":"nutramerican-megaplex/pre-entrenos/energy-x/energy-x-render.png"},
+ "preentrenos-15": {"p":"nutramerican-megaplex/pre-entrenos/lata-myth/lata-myth-render.png"},
+ "preentrenos-16": {"p":"proscience/pre-entrenos/intenze/intenze-render.png"},
+ "preentrenos-17": {"p":"proscience/pre-entrenos/intenze-sachet/intenze-sachet-render.png"},
+ "preentrenos-18": {"p":"proscience/pre-entrenos/lata-intenze-ready/lata-intenze-ready-render.png"},
+ "preentrenos-19": {"p":"proscience/pre-entrenos/lata-intenze-vitality/lata-intenze-vitality-render.png"},
+ "preentrenos-20": {"p":"smart-muscle/pre-entrenos/electron/electron-render.png"},
+ "preentrenos-21": {"p":"smart-muscle/pre-entrenos/electron-x-sachets/electron-x-sachets-render.png"},
+ "preentrenos-22": {"p":"supra/pre-entrenos/energy-brun/energy-brun-render.png"},
+ "preentrenos-23": {"p":"supra/pre-entrenos/pre-energy/pre-energy-render.png"},
+ "proteinas-2": {"p":"dymatize/proteinas/elite-casein/elite-casein.png","cut":1},
+ "proteinas-3": {"p":"dymatize/proteinas/super-mass-gainer/super-mass-gainer-render.png"},
+ "proteinas-4": {"p":"fit-mafia/proteinas/viga/viga-render.png"},
+ "proteinas-5": {"p":"gmn/proteinas/mega-gainer/mega-gainer-render.png"},
+ "proteinas-6": {"p":"gmn/proteinas/super-mega-gainer/super-mega-gainer-render.png"},
+ "proteinas-7": {"p":"healthy-sports/proteinas/barbarus/barbarus-render.png"},
+ "proteinas-8": {"p":"imn-nutrition/proteinas/the-whey-of-imn/the-whey-of-imn-render.png"},
+ "proteinas-9": {"p":"musclemeds/proteinas/carnivor-mass/carnivor-mass-render.png"},
+ "proteinas-10": {"p":"muscletech/proteinas/masstech/masstech-render.png"},
+ "proteinas-11": {"p":"nuspro/proteinas/soybig/soybig-render.png"},
+ "proteinas-12": {"p":"nutramerican-megaplex/proteinas/bipro-mass/bipro-mass-render.png"},
+ "proteinas-13": {"p":"nutramerican-megaplex/proteinas/megaplex-creatine-power/megaplex-creatine-power-render.png"},
+ "proteinas-14": {"p":"optimum-nutrition/proteinas/serious-mass/serious-mass-render.png"},
+ "proteinas-15": {"p":"proscience/proteinas/smart-gainer/smart-gainer-render.png"},
+ "proteinas-16": {"p":"smart-muscle/proteinas/proton-gainer/proton-gainer-render.png"},
+ "proteinas-17": {"p":"smart-nutrition/proteinas/mass-evolution/mass-evolution-render.png"},
+ "proteinas-18": {"p":"supra/proteinas/gainer/gainer-render.png"},
+ "proteinas-19": {"p":"supra/proteinas/mass-gainer/mass-gainer-render.png"},
+ "proteinas-20": {"p":"tnt-neopharma/proteinas/mega-mass/mega-mass-render.png"},
+ "proteinas-21": {"p":"vitanas/proteinas/titan-army/titan-army-render.png"},
+ "proteinas-22": {"p":"musclemeds/proteinas/carnivor/carnivor-render.png"},
+ "proteinas-23": {"p":"vitanas/proteinas/titan-beef-mass/titan-beef-mass-render.png"},
+ "proteinas-24": {"p":"bsn/proteinas/syntha-6/syntha-6-render.png"},
+ "proteinas-25": {"p":"dymatize/proteinas/elite-whey/elite-whey-render.png"},
+ "proteinas-26": {"p":"dymatize/proteinas/iso-100/iso-100-render.png"},
+ "proteinas-27": {"p":"fit-mafia/proteinas/la-wey/la-wey-render.png"},
+ "proteinas-28": {"p":"gmn/proteinas/be-one/be-one-render.png"},
+ "proteinas-29": {"p":"gmn/proteinas/body-ripped/body-ripped-render.png"},
+ "proteinas-30": {"p":"gmn/proteinas/nitro-mass/nitro-mass-render.png"},
+ "proteinas-31": {"p":"healthy-sports/proteinas/iso-whey/iso-whey-render.png"},
+ "proteinas-32": {"p":"isopure/proteinas/isopure/isopure-render.png"},
+ "proteinas-33": {"p":"muscletech/proteinas/iso-whey/iso-whey-render.png"},
+ "proteinas-34": {"p":"muscletech/proteinas/nitrotech/nitrotech-render.png"},
+ "proteinas-35": {"p":"muscletech/proteinas/nitrotech-whey-gold/nitrotech-whey-gold-render.png"},
+ "proteinas-36": {"p":"muscletech/proteinas/nitrotech-ripped/nitrotech-ripped-render.png"},
+ "proteinas-37": {"p":"nuspro/proteinas/soypro-isolate/soypro-isolate-render.png"},
+ "proteinas-38": {"p":"nuspro/proteinas/whey-gold/whey-gold-render.png"},
+ "proteinas-39": {"p":"nutramerican-megaplex/proteinas/bipro-classic/bipro-classic-render.png"},
+ "proteinas-40": {"p":"nutramerican-megaplex/proteinas/bipro-classic-caja/bipro-classic-caja-render.png"},
+ "proteinas-41": {"p":"nutramerican-megaplex/proteinas/bipro-lite/bipro-lite-render.png"},
+ "proteinas-42": {"p":"nutramerican-megaplex/proteinas/bipro-ripped/bipro-ripped-render.png"},
+ "proteinas-43": {"p":"nutramerican-megaplex/proteinas/iso-clean/iso-clean-render.png"},
+ "proteinas-44": {"p":"optimum-nutrition/proteinas/100-whey-gold-standard/100-whey-gold-standard-render.png"},
+ "proteinas-45": {"p":"optimum-nutrition/proteinas/gold-standard-isolate/gold-standard-isolate-render.png"},
+ "proteinas-46": {"p":"proscience/proteinas/best-protein/best-protein-render.png"},
+ "proteinas-47": {"p":"proscience/proteinas/best-whey/best-whey-render.png"},
+ "proteinas-48": {"p":"proscience/proteinas/iso-best/iso-best-render.png"},
+ "proteinas-49": {"p":"proscience/proteinas/sachet-best-protein/sachet-best-protein-render.png"},
+ "proteinas-50": {"p":"smart-muscle/proteinas/proton-whey/proton-whey-render.png"},
+ "proteinas-51": {"p":"smart-nutrition/proteinas/whey-pure/whey-pure-render.png"},
+ "proteinas-52": {"p":"supra/proteinas/iso-whey/iso-whey-render.png"},
+ "proteinas-53": {"p":"supra/proteinas/whey-platinum/whey-platinum-render.png"},
+ "proteinas-54": {"p":"supra/proteinas/whey-pro/whey-pro-render.png"},
+ "proteinas-55": {"p":"supra/proteinas/whey-pro-f/whey-pro-f-render.png"},
+ "proteinas-56": {"p":"tnt-neopharma/proteinas/high-standard-whey/high-standard-whey-render.png"},
+ "proteinas-57": {"p":"tnt-neopharma/proteinas/iso-fit/iso-fit-render.png"},
+ "proteinas-58": {"p":"vitanas/proteinas/isolate-gourmet/isolate-gourmet-render.png"},
+ "proteinas-59": {"p":"vitanas/proteinas/whey-elite/whey-elite-render.png"},
+ "proteinas-60": {"p":"nutramerican-megaplex/proteinas/nutra-vegan-protein/nutra-vegan-protein-render.png"},
+ "proteinas-61": {"p":"proscience/proteinas/best-vegan/best-vegan-render.png"},
+ "proteinas-62": {"p":"supra/proteinas/vegan-protein/vegan-protein-render.png"},
+ "quemadores-2": {"p":"healthy-sports/quemadores/l-carnitina-1000mg/l-carnitina-1000mg-render.png"},
+ "quemadores-3": {"p":"healthy-sports/quemadores/l-carnitina-liquida/l-carnitina-liquida-render.png"},
+ "quemadores-4": {"p":"muscletech/quemadores/hydroxycut-elite/hydroxycut-elite-render.png"},
+ "quemadores-5": {"p":"nutramerican-megaplex/quemadores/burner-stack/burner-stack-render.png"},
+ "quemadores-6": {"p":"nutramerican-megaplex/quemadores/caja-burner-stack/caja-burner-stack-render.png"},
+ "quemadores-7": {"p":"nutramerican-megaplex/quemadores/lata-burner-stack/lata-burner-stack-render.png"},
+ "salud-1": {"p":"healthy-america/vitaminas-salud/b-complex-b12/b-complex-b12-render.png"},
+ "salud-2": {"p":"healthy-america/vitaminas-salud/biotina-900mcg/biotina-900mcg-render.png"},
+ "salud-3": {"p":"healthy-america/vitaminas-salud/cal-mag-zinc-vd3/cal-mag-zinc-vd3-render.png"},
+ "salud-4": {"p":"healthy-america/vitaminas-salud/colageno-vitamina-c/colageno-vitamina-c-render.png"},
+ "salud-5": {"p":"healthy-america/vitaminas-salud/max-for-men/max-for-men-render.png"},
+ "salud-6": {"p":"healthy-america/vitaminas-salud/melatonina-3mg/melatonina-3mg-render.png"},
+ "salud-7": {"p":"healthy-america/vitaminas-salud/omega-3-1200mg/omega-3-1200mg-render.png"},
+ "salud-8": {"p":"healthy-america/vitaminas-salud/picolinato-de-cromo-200mcg/picolinato-de-cromo-200mcg-render.png"},
+ "salud-9": {"p":"healthy-america/vitaminas-salud/potasio-99mg/potasio-99mg-render.png"},
+ "salud-10": {"p":"healthy-america/vitaminas-salud/super-magnesio/super-magnesio-render.png"},
+ "salud-11": {"p":"healthy-america/vitaminas-salud/triple-omega-3-6-9/triple-omega-3-6-9-render.png"},
+ "salud-12": {"p":"healthy-america/vitaminas-salud/vita-c-1000mg-zinc/vita-c-1000mg-zinc-render.png"},
+ "salud-13": {"p":"healthy-america/vitaminas-salud/vitamina-d3-k2/vitamina-d3-k2-render.png"},
+ "salud-14": {"p":"healthy-america/vitaminas-salud/vitamina-e-1000-iu/vitamina-e-1000-iu-render.png"},
+ "salud-15": {"p":"imn-nutrition/vitaminas-salud/multimn/multimn.png","cut":1},
+ "salud-16": {"p":"nutramerican-megaplex/vitaminas-salud/collagen-stack/collagen-stack.png","cut":1},
+ "salud-17": {"p":"nutramerican-megaplex/vitaminas-salud/nutra-c/nutra-c.png","cut":1},
+ "salud-18": {"p":"proscience/vitaminas-salud/omega-3/omega-3.png","cut":1},
+ "salud-19": {"p":"proscience/vitaminas-salud/shield/shield.png","cut":1},
+ "salud-20": {"p":"proscience/vitaminas-salud/the-one/the-one-render.png"},
+ "salud-21": {"p":"healthy-sports/vitaminas-salud/test-hd/test-hd-render.png"}
+};
+
+/* KITS — combos de varios productos en una sola compra.
+   Cada componente referencia un producto por id y el índice de presentación.
+   El precio del kit es la suma exacta de sus componentes (se recalcula solo). */
+const KITS = [
+  { id:'kit-inicio', jp:'始', name:'KIT INICIO', desc:'La base del que empieza en serio.',
+    items:[ ['proteinas-44',0], ['creatinas-12',0] ] },
+  { id:'kit-volumen', jp:'力', name:'KIT VOLUMEN', desc:'Masa con estructura, no con excusas.',
+    items:[ ['proteinas-14',0], ['creatinas-12',0], ['aminoacidos-1',0] ] },
+  { id:'kit-fuerza', jp:'核', name:'KIT FUERZA', desc:'Entreno pesado, recuperación honesta.',
+    items:[ ['proteinas-34',0], ['preentrenos-7',0], ['creatinas-12',0] ] },
+  { id:'kit-definicion', jp:'刃', name:'KIT DEFINICIÓN', desc:'Corte limpio, sin perder lo ganado.',
+    items:[ ['proteinas-26',0], ['preentrenos-8',0], ['quemadores-4',0] ] },
+  { id:'kit-salud', jp:'守', name:'KIT SALUD', desc:'El mantenimiento del templo.',
+    items:[ ['salud-7',1], ['salud-10',0], ['salud-12',0] ] },
+];
+
+const WHATSAPP = '573144521946';
+const DISCOUNTS = { 'KYODAI_5%':0.05, 'KYODAI_7%':0.07 };
+const CITIES = ['Bogotá D.C.','Soacha','Chía','Cajicá','Zipaquirá','Mosquera','Funza','Medellín','Cali','Barranquilla','Cartagena','Bucaramanga','Cúcuta','Pereira','Manizales','Armenia','Ibagué','Villavicencio','Tunja','Santa Marta','Neiva','Pasto','Montería','Valledupar','Otro municipio'];
+const SHIPPING_BOGOTA = 9000;
+
+/* =========================================================
+   Estado
+   ========================================================= */
+const state = {
+  active:'all', brand:'all', sort:'feat', group:false, q:'',
+  sel:{}, cart:{}, added:{}, cartOpen:false,
+  step:'cart',                       // cart | address | summary
+  disc:{ code:null, rate:0, msg:'', ok:false },
+  addr:{ city:'', cityOther:'', dir:'', comp:'', instr:'' },
+};
+const byId = Object.fromEntries(PRODUCTS.map(p=>[p.id,p]));
+const fmt = n => '$' + n.toLocaleString('es-CO');
+const prefersReduced = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const kitPrice = k => k.items.reduce((t,[id,vi]) => t + byId[id].variants[vi].price, 0);
+const minPrice = p => Math.min(...p.variants.map(v=>v.price));
+
+/* =========================================================
+   Render del catálogo
+   ========================================================= */
+const UI = {};
+window.UI = UI;
+let io;
+
+function sortItems(list){
+  const s = state.sort;
+  const arr = [...list];
+  if (s==='priceAsc')  arr.sort((a,b)=>minPrice(a)-minPrice(b));
+  if (s==='priceDesc') arr.sort((a,b)=>minPrice(b)-minPrice(a));
+  if (s==='az')        arr.sort((a,b)=>(a.brand+a.name).localeCompare(b.brand+b.name,'es'));
+  if (s==='best')      arr.sort((a,b)=>(b.badge?1:0)-(a.badge?1:0));
+  if (s==='feat')      arr.sort((a,b)=>(b.badge?1:0)-(a.badge?1:0)===0 ? 0 : (b.badge?1:0)-(a.badge?1:0));
+  return arr;
+}
+
+function productCard(p){
+  const vi = Math.min(state.sel[p.id] ?? 0, p.variants.length-1);
+  const v = p.variants[vi];
+  const im = PRODUCT_IMAGES[p.id];
+  const tile = im
+    ? `<img src="${esc(IMG_BASE+im.p)}"${im.cut?' class="cut"':''} alt="${esc(p.brand+' '+p.name)}" loading="lazy">`
+    : `<span class="wm">${SECTION_JP[p.section]||'兄'}</span>
+       <div class="tb"><div class="b">${esc(p.brand)}</div><div class="n">${esc(p.name)}</div><div class="rule"></div></div>`;
+  return `<article class="card" data-card>
+    ${p.badge?`<div class="badge">${esc(p.badge)}</div>`:''}
+    <div class="tile">${tile}</div>
+    <div class="cardBody">
+      <div class="cardMeta"><span class="cardBrand">${esc(p.brand)}</span><span class="cardSub">${esc(p.sub)}</span></div>
+      <h3 class="cardName">${esc(p.name)}</h3>
+      <div class="pills">${p.variants.map((vv,i)=>
+        `<button class="pill${i===vi?' on':''}" onclick="UI.pickVar('${p.id}',${i})">${esc(vv.pres)}</button>`).join('')}
+      </div>
+      <div class="priceRow">
+        <div class="priceLbl">Precio</div>
+        <div class="priceVal">${fmt(v.price)}</div>
+      </div>
+      <button class="addBtn${state.added[p.id]?' done':''}" onclick="UI.add('${p.id}')">${state.added[p.id]?'Agregado ✓':'Agregar al pedido'}</button>
+    </div>
+  </article>`;
+}
+
+function kitCard(k){
+  const price = kitPrice(k);
+  const comps = k.items.map(([id,vi])=>{
+    const p = byId[id], v = p.variants[vi];
+    return `<div>· <span>${esc(p.brand)} ${esc(p.name)}</span> — ${esc(v.pres)}</div>`;
+  }).join('');
+  return `<article class="card" data-card>
+    <div class="badge">Kit</div>
+    <div class="tile kit"><span class="wm">${k.jp}</span>
+      <div class="tb"><span class="kitKanji">${k.jp}</span><div class="b" style="margin-top:8px">${esc(k.name)}</div><div class="rule"></div></div>
+    </div>
+    <div class="cardBody">
+      <h3 class="cardName">${esc(k.name)}</h3>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14.5px;color:#8A8A92">${esc(k.desc)}</div>
+      <div class="kitList">${comps}</div>
+      <div class="priceRow">
+        <div class="priceLbl">Precio del kit</div>
+        <div class="priceVal">${fmt(price)}</div>
+      </div>
+      <button class="addBtn${state.added[k.id]?' done':''}" onclick="UI.addKit('${k.id}')">${state.added[k.id]?'Agregado ✓':'Agregar kit al pedido'}</button>
+    </div>
+  </article>`;
+}
+
+function renderTabs(){
+  const tabs = [{id:'all',label:'Todos'}, ...SECTIONS, {id:'kits',label:'Kits'}];
+  document.getElementById('tabs').innerHTML = tabs.map(t=>
+    `<button class="tab${t.id==='kits'?' kits':''}${state.active===t.id?' on':''}" onclick="UI.setTab('${t.id}')">${t.label}</button>`).join('');
+}
+
+function renderBrandSel(){
+  const brands = [...new Set(PRODUCTS.map(p=>p.brand))].sort((a,b)=>a.localeCompare(b,'es'));
+  document.getElementById('brandSel').innerHTML =
+    `<option value="all">Todas las marcas</option>` +
+    brands.map(b=>`<option value="${esc(b)}"${state.brand===b?' selected':''}>${esc(b)}</option>`).join('');
+}
+
+function renderCatalog(){
+  const root = document.getElementById('sections');
+  const q = state.q.trim().toLowerCase();
+  const match = p => (!q || (p.name+' '+p.brand+' '+p.sub).toLowerCase().includes(q))
+                  && (state.brand==='all' || p.brand===state.brand);
+
+  if (state.active==='kits'){
+    const kq = k => !q || (k.name+' '+k.desc).toLowerCase().includes(q);
+    const kits = KITS.filter(kq);
+    root.innerHTML = kits.length ? `
+      <section class="cat">
+        <div class="secHead">
+          <div>
+            <div class="secEyebrow">Combos — Kits</div>
+            <h2 class="secTitle">Kits <span class="jp">組</span></h2>
+            <div class="secTag">Varios productos, una sola compra.</div>
+          </div>
+          <div class="secCount">${kits.length} kits</div>
+        </div>
+        <div class="grid kitsGrid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">${kits.map(kitCard).join('')}</div>
+      </section>` : noRes();
+    observeCards(); return;
+  }
+
+  let secs = [];
+  if (state.group){
+    // Agrupar por marca
+    const pool = PRODUCTS.filter(p => match(p) && (state.active==='all' || p.section===state.active));
+    const brands = [...new Set(pool.map(p=>p.brand))].sort((a,b)=>a.localeCompare(b,'es'));
+    secs = brands.map((b,i)=>({
+      key:b, label:b, jp:'印', tagline:'Todo lo de la casa, junto.',
+      idx:String(i+1).padStart(2,'0'),
+      items: sortItems(pool.filter(p=>p.brand===b)),
+    }));
+  } else {
+    let idx=0;
+    for (const s of SECTIONS){
+      if (state.active!=='all' && state.active!==s.id) continue;
+      const items = sortItems(PRODUCTS.filter(p=>p.section===s.id && match(p)));
+      if (!items.length) continue;
+      idx++;
+      secs.push({ key:s.id, label:s.label, jp:s.jp, tagline:s.tagline, idx:String(idx).padStart(2,'0'), items });
+    }
+  }
+
+  root.innerHTML = secs.length ? secs.map(s=>`
+    <section class="cat">
+      <div class="secHead">
+        <div>
+          <div class="secEyebrow">${s.idx} — ${esc(s.label)}</div>
+          <h2 class="secTitle">${esc(s.label)} <span class="jp">${s.jp}</span></h2>
+          <div class="secTag">${esc(s.tagline)}</div>
+        </div>
+        <div class="secCount">${s.items.length} productos</div>
+      </div>
+      <div class="grid">${s.items.map(productCard).join('')}</div>
+    </section>`).join('') : noRes();
+  observeCards();
+}
+
+function noRes(){
+  return `<div class="noRes"><div class="mu">無</div><div style="font-size:14px;letter-spacing:.08em">Nada por aquí. Ajusta la búsqueda, hermano.</div></div>`;
+}
+
+function observeCards(){
+  if (io) io.disconnect();
+  const cards = document.querySelectorAll('[data-card]');
+  if (!('IntersectionObserver' in window) || prefersReduced()){
+    cards.forEach(c=>c.classList.add('vis')); return;
+  }
+  io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target);} }),{rootMargin:'80px'});
+  cards.forEach(c=>io.observe(c));
+}
+
+/* =========================================================
+   Carrito y flujo de pedido
+   ========================================================= */
+function cartEntries(){ return Object.values(state.cart); }
+function subtotal(){ return cartEntries().reduce((t,c)=>t+c.price*c.qty,0); }
+function discountVal(){ return Math.round(subtotal()*state.disc.rate); }
+function shippingVal(){
+  const city = state.addr.city;
+  if (!city) return null;
+  return city==='Bogotá D.C.' ? SHIPPING_BOGOTA : null; // null → se confirma por WhatsApp
+}
+function cityName(){ return state.addr.city==='Otro municipio' ? state.addr.cityOther : state.addr.city; }
+
+function flash(id){
+  state.added[id]=true; renderAll();
+  clearTimeout(flash._t?.[id]); flash._t = flash._t||{};
+  flash._t[id]=setTimeout(()=>{ state.added[id]=false; renderAll(); },1400);
+}
+
+UI.pickVar = (id,i)=>{ state.sel[id]=i; renderCatalog(); };
+UI.add = id=>{
+  const p=byId[id]; const vi=Math.min(state.sel[id]??0,p.variants.length-1); const v=p.variants[vi];
+  const key=id+'|'+v.pres; const cur=state.cart[key];
+  state.cart[key]=cur?{...cur,qty:cur.qty+1}:{key,brand:p.brand,name:p.name,pres:v.pres,price:v.price,qty:1};
+  flash(id);
+};
+UI.addKit = kid=>{
+  const k=KITS.find(x=>x.id===kid);
+  const pres=k.items.map(([id,vi])=>{const p=byId[id];return p.name+' '+p.variants[vi].pres;}).join(' + ');
+  const key='kit|'+kid; const cur=state.cart[key];
+  state.cart[key]=cur?{...cur,qty:cur.qty+1}:{key,brand:'Kyodai Kit',name:k.name,pres,price:kitPrice(k),qty:1,isKit:true};
+  flash(kid);
+};
+UI.bump = (key,d)=>{
+  const cur=state.cart[key]; if(!cur) return;
+  const qty=cur.qty+d;
+  if (qty<=0 || !isFinite(qty)) delete state.cart[key]; else state.cart[key]={...cur,qty};
+  renderAll();
+};
+UI.toggleCart = ()=>{ state.cartOpen=!state.cartOpen; if(state.cartOpen) state.step='cart'; renderDrawer(); };
+UI.closeCart  = ()=>{ state.cartOpen=false; hideSummary(); renderDrawer(); };
+UI.setTab   = id=>{ state.active=id; renderTabs(); renderCatalog(); };
+UI.setBrand = b =>{ state.brand=b; renderCatalog(); };
+UI.setSort  = s =>{ state.sort=s; renderCatalog(); };
+UI.setQ     = q =>{ state.q=q; renderCatalog(); };
+UI.toggleGroup = ()=>{
+  state.group=!state.group;
+  const el=document.getElementById('groupBrand');
+  el.classList.toggle('on',state.group); el.setAttribute('aria-checked',state.group);
+  renderCatalog();
+};
+UI.applyDisc = ()=>{
+  const raw=(document.getElementById('discInput')?.value||'').trim().toUpperCase();
+  if (!raw){ state.disc={code:null,rate:0,msg:'',ok:false}; renderDrawer(); return; }
+  const rate=DISCOUNTS[raw];
+  state.disc = rate
+    ? {code:raw,rate,msg:'Código aplicado: '+Math.round(rate*100)+'% de descuento sobre el subtotal.',ok:true}
+    : {code:null,rate:0,msg:'Código no válido.',ok:false};
+  renderDrawer();
+};
+UI.clearDisc = ()=>{ state.disc={code:null,rate:0,msg:'',ok:false}; renderDrawer(); };
+UI.goAddress = ()=>{ if(!cartEntries().length) return; state.step='address'; renderDrawer(); };
+UI.backToCart = ()=>{ state.step='cart'; renderDrawer(); };
+UI.saveAddr = ()=>{
+  const g=id=>document.getElementById(id)?.value?.trim()||'';
+  state.addr={ city:g('fCity'), cityOther:g('fCityOther'), dir:g('fDir'), comp:g('fComp'), instr:g('fInstr') };
+  const errs=[];
+  if(!state.addr.city) errs.push('ciudad / municipio');
+  if(state.addr.city==='Otro municipio' && !state.addr.cityOther) errs.push('nombre del municipio');
+  if(!state.addr.dir) errs.push('dirección');
+  const errEl=document.getElementById('fErr');
+  if(errs.length){ errEl.textContent='Falta: '+errs.join(', ')+'.'; errEl.style.display='block'; return; }
+  state.step='summary'; renderDrawer(); showSummary();
+};
+UI.backToAddress = ()=>{ hideSummary(); state.step='address'; renderDrawer(); };
+UI.onCityChange = v=>{
+  state.addr.city=v;
+  document.getElementById('fCityOtherWrap').style.display = v==='Otro municipio'?'block':'none';
+  const s=shippingVal();
+  document.getElementById('shipNote').innerHTML = shipNoteHtml();
+};
+function shipNoteHtml(){
+  if(!state.addr.city) return 'Selecciona la ciudad para calcular el envío.';
+  return state.addr.city==='Bogotá D.C.'
+    ? 'Envío en Bogotá: <b>'+fmt(SHIPPING_BOGOTA)+'</b>'
+    : 'Envío fuera de Bogotá: <b>se confirma el costo vía WhatsApp</b>.';
+}
+
+/* ---------- Drawer render ---------- */
+function renderDrawer(){
+  const drawer=document.getElementById('drawer'), ov=document.getElementById('overlay');
+  drawer.classList.toggle('open',state.cartOpen);
+  ov.style.display=state.cartOpen?'block':'none';
+  document.body.style.overflow = (state.cartOpen||document.getElementById('summaryWrap').style.display==='flex')?'hidden':'';
+  const body=document.getElementById('dBody'), foot=document.getElementById('dFoot'), title=document.getElementById('dTitle');
+  const entries=cartEntries();
+
+  if (state.step==='address'){
+    title.innerHTML='Datos de entrega <span class="jp">配達</span>';
+    body.innerHTML=`
+      <div class="fGroup">
+        <label class="fLbl" for="fCity">Ciudad / Municipio</label>
+        <select id="fCity" onchange="UI.onCityChange(this.value)">
+          <option value="">Selecciona…</option>
+          ${CITIES.map(c=>`<option${state.addr.city===c?' selected':''}>${c}</option>`).join('')}
+        </select>
+        <div id="fCityOtherWrap" style="display:${state.addr.city==='Otro municipio'?'block':'none'};margin-top:10px">
+          <input id="fCityOther" type="text" placeholder="Escribe el municipio" value="${esc(state.addr.cityOther)}">
+        </div>
+        <div class="shipNote" id="shipNote" style="margin-top:10px">${shipNoteHtml()}</div>
+      </div>
+      <div class="fGroup">
+        <label class="fLbl" for="fDir">Dirección</label>
+        <input id="fDir" type="text" placeholder="Ej: Cra 15 # 85-24" value="${esc(state.addr.dir)}">
+        <div class="fHint">Formato colombiano: Calle / Carrera / Diagonal # xx-xx</div>
+      </div>
+      <div class="fGroup">
+        <label class="fLbl" for="fComp">Complemento <span class="opt">· opcional</span></label>
+        <input id="fComp" type="text" placeholder="Apto, torre, casa, interior, conjunto…" value="${esc(state.addr.comp)}">
+      </div>
+      <div class="fGroup">
+        <label class="fLbl" for="fInstr">Instrucciones de entrega <span class="opt">· opcional</span></label>
+        <textarea id="fInstr" rows="2" placeholder="Ej: dejar en portería, llamar al llegar…">${esc(state.addr.instr)}</textarea>
+      </div>
+      <div id="fErr" style="display:none;color:#C8636F;font-size:12px;margin-top:4px;letter-spacing:.03em"></div>`;
+    foot.innerHTML=`
+      <button class="primaryBtn" onclick="UI.saveAddr()">Ver resumen del pedido</button>
+      <button class="ghostBtn" onclick="UI.backToCart()">← Volver al pedido</button>`;
+    return;
+  }
+
+  /* step: cart */
+  title.innerHTML='Tu pedido <span class="jp">注文</span>';
+  body.innerHTML = entries.length ? entries.map(c=>`
+    <div class="cItem">
+      <div class="cTop">
+        <div>
+          <div class="cBrand">${esc(c.brand)}</div>
+          <div class="cName">${esc(c.name)}</div>
+          <div class="cPres">${esc(c.pres)}</div>
+        </div>
+        <div class="cLine">${fmt(c.price*c.qty)}</div>
+      </div>
+      <div class="cCtl">
+        <button class="qBtn" onclick="UI.bump('${esc(c.key)}',-1)">−</button>
+        <span class="cQty">${c.qty}</span>
+        <button class="qBtn" onclick="UI.bump('${esc(c.key)}',1)">+</button>
+        <button class="cRem" onclick="UI.bump('${esc(c.key)}',-Infinity)">Quitar</button>
+      </div>
+    </div>`).join('')
+  : `<div class="dEmpty">Aún no has agregado productos.<br><em>La constancia empieza con el primer paso.</em></div>`;
+
+  const sub=subtotal(), disc=discountVal();
+  foot.innerHTML = `
+    <div class="discRow">
+      <input id="discInput" type="text" placeholder="Código de descuento" value="${esc(state.disc.code||'')}">
+      <button onclick="UI.applyDisc()">Aplicar</button>
+    </div>
+    <div class="discMsg ${state.disc.ok?'ok':(state.disc.msg?'bad':'')}">${esc(state.disc.msg)}${state.disc.ok?` <a href="#" onclick="UI.clearDisc();return false" style="color:#4A4A50">(quitar)</a>`:''}</div>
+    <div class="tRow"><span>Subtotal</span><span>${fmt(sub)}</span></div>
+    ${state.disc.ok?`<div class="tRow"><span>Descuento (${esc(state.disc.code)})</span><span class="neg">−${fmt(disc)}</span></div>`:''}
+    <div class="tRow"><span>Envío</span><span style="color:#4A4A50">se calcula con la dirección</span></div>
+    <div class="tRow total"><span class="l">Total parcial</span><span class="v">${fmt(sub-disc)}</span></div>
+    <button class="primaryBtn" ${entries.length?'':'disabled'} onclick="UI.goAddress()">Continuar · datos de entrega</button>
+    <div class="dNote">Precios COP</div>`;
+}
+
+/* ---------- Summary modal ---------- */
+function showSummary(){
+  const wrap=document.getElementById('summaryWrap');
+  const el=document.getElementById('summary');
+  const now=new Date();
+  const dd=String(now.getDate()).padStart(2,'0'), mm=String(now.getMonth()+1).padStart(2,'0'), aa=String(now.getFullYear()).slice(-2);
+  const hh=String(now.getHours()).padStart(2,'0'), mi=String(now.getMinutes()).padStart(2,'0');
+  const fecha=`${dd}/${mm}/${aa}`, hora=`${hh}:${mi}`;
+  const entries=cartEntries(), sub=subtotal(), disc=discountVal(), ship=shippingVal();
+  const total=sub-disc+(ship??0);
+  const a=state.addr;
+
+  el.innerHTML=`
+    <div class="sKanji">兄弟</div>
+    <div class="sTitle">Resumen del pedido</div>
+    <div class="sDate">${fecha} · ${hora}</div>
+    <div class="sBlock">
+      <div class="sBlockT">Productos</div>
+      ${entries.map(c=>`<div class="sLine"><span><span class="q">${c.qty}×</span> ${esc(c.brand)} ${esc(c.name)} <span class="q">(${esc(c.pres)})</span></span><span>${fmt(c.price*c.qty)}</span></div>`).join('')}
+    </div>
+    <div class="sBlock">
+      <div class="sLine"><span>Subtotal</span><span>${fmt(sub)}</span></div>
+      ${state.disc.ok?`<div class="sLine"><span>Descuento (${esc(state.disc.code)})</span><span style="color:#7FBF8E">−${fmt(disc)}</span></div>`:''}
+      <div class="sLine"><span>Envío${ship!=null?' (Bogotá)':''}</span><span>${ship!=null?fmt(ship):'se confirma vía WhatsApp'}</span></div>
+      <div class="sLine" style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:12px">
+        <span style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8A8A92">Total${ship==null?' (sin envío)':''}</span>
+        <span style="font-size:20px;color:#fff;font-weight:600">${fmt(total)}</span>
+      </div>
+    </div>
+    <div class="sBlock">
+      <div class="sBlockT">Entrega</div>
+      <div class="sAddr">
+        <div><span class="k">Ciudad</span> ${esc(cityName())}</div>
+        <div><span class="k">Dirección</span> ${esc(a.dir)}</div>
+        ${a.comp?`<div><span class="k">Complemento</span> ${esc(a.comp)}</div>`:''}
+        ${a.instr?`<div><span class="k">Instrucciones</span> ${esc(a.instr)}</div>`:''}
+      </div>
+    </div>
+    <div class="sBlock" style="border-top:none;padding-top:6px">
+      <a class="primaryBtn" href="${waHref(fecha,hora)}" target="_blank" rel="noopener">Confirmar pedido por WhatsApp</a>
+      <button class="ghostBtn" onclick="UI.backToAddress()">← Editar dirección</button>
+    </div>`;
+  wrap.style.display='flex';
+}
+function hideSummary(){ document.getElementById('summaryWrap').style.display='none'; document.body.style.overflow=state.cartOpen?'hidden':''; }
+
+function waHref(fecha,hora){
+  const entries=cartEntries(), sub=subtotal(), disc=discountVal(), ship=shippingVal();
+  const total=sub-disc+(ship??0);
+  const a=state.addr;
+  const lines=entries.map(c=>`${c.qty}x ${c.brand} ${c.name} (${c.pres}) - ${fmt(c.price*c.qty)}`);
+  let msg='Hola Kyodai 兄弟, quiero confirmar este pedido:\n';
+  msg+=`\n📅 Fecha: ${fecha} · Hora: ${hora}\n`;
+  msg+='\n🛒 PRODUCTOS\n'+lines.join('\n')+'\n';
+  msg+=`\nSubtotal: ${fmt(sub)}`;
+  if (state.disc.ok) msg+=`\nDescuento (${state.disc.code}): -${fmt(disc)}`;
+  msg+= ship!=null ? `\nEnvío (Bogotá): ${fmt(ship)}` : `\nEnvío: por confirmar vía WhatsApp`;
+  msg+=`\nTOTAL${ship==null?' (sin envío)':''}: ${fmt(total)}\n`;
+  msg+='\n📍 ENTREGA';
+  msg+=`\nCiudad: ${cityName()}`;
+  msg+=`\nDirección: ${a.dir}`;
+  if (a.comp)  msg+=`\nComplemento: ${a.comp}`;
+  if (a.instr) msg+=`\nInstrucciones: ${a.instr}`;
+  return 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(msg);
+}
+
+/* ---------- Global render ---------- */
+function renderAll(){
+  const count=cartEntries().reduce((t,c)=>t+c.qty,0);
+  const cc=document.getElementById('cartCount');
+  cc.textContent=count; cc.style.display=count?'inline-flex':'none';
+  renderCatalog(); renderDrawer();
+}
+
+/* ---------- Init ---------- */
+document.getElementById('heroCount').textContent =
+  PRODUCTS.length+' productos · '+new Set(PRODUCTS.map(p=>p.brand)).size+' marcas · '+KITS.length+' kits · Un estándar';
+renderTabs(); renderBrandSel(); renderCatalog(); renderDrawer();
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ hideSummary(); if(state.cartOpen) UI.closeCart(); }});
+</script>
+</body>
+</html>
