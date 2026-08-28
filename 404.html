@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>兄弟 KYODAI — Camino sin salida</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23A81829'/%3E%3Ctext x='32' y='45' font-size='40' font-family='serif' font-weight='600' fill='%23fff' text-anchor='middle'%3E兄%3C/text%3E%3C/svg%3E">
+<script>
+(function(){try{var t=localStorage.getItem('kyodai-theme');if(t!=='light'&&t!=='dark')t='dark';
+document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@300;400;500&family=Noto+Serif+JP:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--panel:#0A0A0B;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+  --ink:#fff;--offwhite:#D6D6D2;--grey:#8A8A92;--dim:#4A4A50;--crimson:#A81829;--crimson2:#C21E31;--ghost:rgba(255,255,255,.03)}
+html[data-theme="light"]{--bg:#F2F0EA;--panel:#FBFAF6;--line:rgba(16,16,18,.11);--line2:rgba(16,16,18,.20);
+  --ink:#0B0B0C;--offwhite:#26262A;--grey:#57575F;--dim:#78787F;--crimson:#96121F;--crimson2:#B01727;--ghost:rgba(16,16,18,.04)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--offwhite);font-family:'Inter',sans-serif;font-weight:300;
+  min-height:100svh;display:flex;align-items:center;justify-content:center;padding:40px 24px;
+  position:relative;overflow:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.ghost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Noto Serif JP',serif;
+  font-size:min(66vw,460px);color:var(--ghost);line-height:1;pointer-events:none;user-select:none}
+.box{position:relative;text-align:center;max-width:520px}
+.k{font-family:'Noto Serif JP',serif;font-weight:600;font-size:clamp(56px,15vw,96px);color:var(--ink);line-height:1}
+.code{margin-top:18px;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--crimson2)}
+h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(26px,6vw,40px);color:var(--ink);
+  margin:14px 0 0;letter-spacing:.02em;line-height:1.2}
+p{margin-top:18px;font-size:14.5px;line-height:1.85;color:var(--grey)}
+.rule{width:40px;height:1px;background:var(--crimson);margin:28px auto}
+.btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:6px}
+.btn{display:inline-flex;align-items:center;border:1px solid var(--line2);padding:13px 24px;border-radius:2px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--offwhite);
+  transition:border-color .3s,color .3s,background-color .3s}
+.btn:hover{border-color:var(--ink);color:var(--ink)}
+.btn.primary{background:var(--crimson);border-color:var(--crimson);color:#fff}
+.btn.primary:hover{background:var(--crimson2);border-color:var(--crimson2);color:#fff}
+.fine{margin-top:34px;font-size:11px;letter-spacing:.16em;color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="ghost" aria-hidden="true">迷</div>
+<main class="box">
+  <div class="k" aria-hidden="true">兄弟</div>
+  <div class="code">Error 404</div>
+  <h1>Este camino no lleva a ninguna parte</h1>
+  <p>La página que buscas no existe o cambió de dirección. No es tu culpa —
+     y de todas formas, aquí siempre se vuelve a empezar.</p>
+  <div class="rule"></div>
+  <div class="btns">
+    <a class="btn primary" href="/" id="bHome">Volver a la casa</a>
+    <a class="btn" href="/" id="bShop">Suplementos</a>
+    <a class="btn" href="/" id="bDiario">El diario</a>
+  </div>
+  <div class="fine">兄弟 KYODAI — Bogotá, Colombia</div>
+</main>
+<script>
+/* La base cambia según dónde esté publicado el sitio:
+   · GitHub Pages de proyecto → /Kyodai.co/
+   · dominio propio (kyodai.com) → /
+   Se calcula sola para que esta página no haya que tocarla al mudarse. */
+(function(){
+  var base = '/';
+  if (/\.github\.io$/i.test(location.hostname)){
+    var seg = location.pathname.split('/').filter(Boolean)[0];
+    if (seg) base = '/' + seg + '/';
+  }
+  document.getElementById('bHome').href   = base;
+  document.getElementById('bShop').href   = base + '#/suplementos';
+  document.getElementById('bDiario').href = base + '#/diario';
+})();
+</script>
+</body>
+</html>

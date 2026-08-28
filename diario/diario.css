@@ -1,0 +1,168 @@
+/* ════════════════════════════════════════════════════════════════
+   兄弟 KYODAI — EL DIARIO
+   Hoja compartida por todos los artículos de esta carpeta.
+   La paleta es la misma del sitio (index.html): oscuro = tinta sobre
+   la noche, claro = tinta sobre washi. No dupliques colores en los
+   artículos: usa siempre estas variables.
+   ════════════════════════════════════════════════════════════════ */
+:root{
+  color-scheme:dark;
+  --bg:#000; --bg2:#050505; --panel:#0A0A0B; --panel2:#121214; --panel3:#1C1C1F;
+  --heroTop:#141416; --footTop:#101012;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14); --line3:rgba(255,255,255,.22);
+  --hair:rgba(255,255,255,.05);
+  --ink:#fff; --offwhite:#D6D6D2; --grey:#8A8A92; --dim:#62626A;
+  --crimson:#A81829; --crimson2:#C21E31; --onCrimson:#fff;
+  --navBg:rgba(0,0,0,.78); --barBg:rgba(0,0,0,.88);
+  --mark:rgba(255,255,255,.045); --markHot:rgba(168,24,41,.14); --ghost:rgba(255,255,255,.02);
+  --thumb:#2A2A2E;
+}
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F2F0EA; --bg2:#EDEAE3; --panel:#FBFAF6; --panel2:#FFFFFF; --panel3:#E7E3DA;
+  --heroTop:#FFFFFF; --footTop:#EAE7DF;
+  --line:rgba(16,16,18,.11); --line2:rgba(16,16,18,.20); --line3:rgba(16,16,18,.38);
+  --hair:rgba(16,16,18,.07);
+  --ink:#0B0B0C; --offwhite:#26262A; --grey:#57575F; --dim:#78787F;
+  --crimson:#96121F; --crimson2:#B01727; --onCrimson:#fff;
+  --navBg:rgba(242,240,234,.84); --barBg:rgba(242,240,234,.93);
+  --mark:rgba(16,16,18,.06); --markHot:rgba(150,18,31,.16); --ghost:rgba(16,16,18,.035);
+  --thumb:#C9C4B8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--offwhite);font-family:'Inter',sans-serif;font-weight:300;
+  -webkit-font-smoothing:antialiased;transition:background-color .5s ease,color .5s ease}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:10px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--thumb);border-radius:5px}
+:focus-visible{outline:2px solid var(--crimson);outline-offset:3px}
+.skipLink{position:absolute;left:-9999px;top:0;z-index:5000;background:var(--crimson);color:var(--onCrimson);
+  padding:12px 20px;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+.skipLink:focus{left:12px;top:12px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:14px 28px;background:var(--navBg);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.navLeft{display:flex;align-items:center;gap:16px;min-width:0}
+.navRight{display:flex;align-items:center;gap:10px}
+.navBack{display:inline-flex;align-items:center;gap:9px;color:var(--grey);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;white-space:nowrap;border:1px solid var(--line2);padding:9px 15px;border-radius:2px;
+  transition:border-color .3s,color .3s}
+.navBack:hover{border-color:var(--ink);color:var(--ink)}
+.navBack .jp{font-family:'Noto Serif JP',serif;font-size:13px}
+nav .logo{display:flex;align-items:baseline;gap:10px}
+nav .logo .jp{font-family:'Noto Serif JP',serif;font-weight:600;font-size:21px;color:var(--ink);letter-spacing:.1em}
+nav .logo .lt{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.5em;color:var(--grey)}
+nav .logo .tag{font-size:10px;letter-spacing:.28em;color:var(--dim);text-transform:uppercase}
+.themeBtn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;flex:0 0 auto;
+  background:transparent;border:1px solid var(--line2);color:var(--grey);border-radius:2px;cursor:pointer;
+  font-family:'Noto Serif JP',serif;font-size:15px;line-height:1;transition:border-color .3s,color .3s}
+.themeBtn:hover{border-color:var(--crimson);color:var(--ink)}
+
+/* ── CABECERA DEL ARTÍCULO ── */
+.artHead{position:relative;padding:150px 24px 46px;text-align:center;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 0%,var(--heroTop) 0%,var(--bg) 72%);
+  border-bottom:1px solid var(--line)}
+.artHead .kGhost{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-family:'Noto Serif JP',serif;
+  font-size:min(46vw,300px);color:var(--ghost);pointer-events:none;line-height:1;user-select:none}
+.artHead .inner{position:relative;max-width:760px;margin:0 auto}
+.artMeta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 14px;
+  font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.artMeta .et{color:var(--crimson2);border:1px solid rgba(168,24,41,.4);padding:3px 9px;border-radius:2px}
+.artHead h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,6.4vw,52px);
+  color:var(--ink);line-height:1.15;letter-spacing:.02em;margin:20px 0 0}
+.artHead .bajada{margin-top:20px;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(17px,2.6vw,21px);line-height:1.6;color:var(--grey)}
+.artHead .rule{width:40px;height:1px;background:var(--crimson);margin:28px auto 0}
+
+/* ── CUERPO ── */
+.articulo{max-width:680px;margin:0 auto;padding:56px 24px 20px}
+.articulo>*+*{margin-top:26px}
+.articulo p{font-size:16px;line-height:1.9;color:var(--offwhite);letter-spacing:.005em}
+.articulo p.entradilla{font-size:18px;line-height:1.85;color:var(--ink)}
+.articulo h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(24px,4vw,32px);
+  color:var(--ink);letter-spacing:.02em;line-height:1.25;margin-top:52px;padding-top:6px}
+.articulo h2 .jp{font-family:'Noto Serif JP',serif;font-size:.5em;color:var(--dim);margin-left:10px;vertical-align:.15em}
+.articulo h3{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--crimson2);
+  font-weight:500;margin-top:38px}
+.articulo strong{font-weight:500;color:var(--ink)}
+.articulo em{font-style:italic}
+.articulo a:not(.btn){color:var(--ink);border-bottom:1px solid var(--crimson);transition:color .3s,border-color .3s}
+.articulo a:not(.btn):hover{color:var(--crimson2);border-color:var(--crimson2)}
+.articulo ul,.articulo ol{padding-left:22px;color:var(--offwhite)}
+.articulo li{font-size:16px;line-height:1.85;margin-bottom:12px}
+.articulo li::marker{color:var(--crimson)}
+.articulo blockquote{border-left:2px solid var(--crimson);padding:6px 0 6px 22px;margin-left:0;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,3vw,24px);
+  line-height:1.5;color:var(--ink)}
+.articulo hr{border:none;border-top:1px solid var(--line);margin:48px 0}
+.articulo figure{margin:36px 0}
+.articulo img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:2px}
+.articulo figcaption{margin-top:10px;font-size:11.5px;letter-spacing:.06em;color:var(--dim);text-align:center}
+.articulo table{width:100%;border-collapse:collapse;font-size:14px}
+.articulo th,.articulo td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+.articulo th{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);font-weight:500}
+.articulo td{color:var(--offwhite)}
+.tablaWrap{overflow-x:auto}
+
+/* Recuadro de nota / advertencia */
+.nota{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;background:var(--panel);
+  border:1px solid var(--line);border-left:2px solid var(--crimson);border-radius:2px}
+.nota .nk{font-family:'Noto Serif JP',serif;font-size:22px;color:var(--crimson);line-height:1;flex:0 0 auto;margin-top:2px}
+.nota p{font-size:13.5px;line-height:1.75;color:var(--grey)}
+.nota p b{color:var(--offwhite);font-weight:500}
+
+/* Cierre del artículo */
+.artFin{max-width:680px;margin:0 auto;padding:10px 24px 20px}
+.artFin .sello{text-align:center;font-family:'Noto Serif JP',serif;font-size:26px;color:var(--dim);
+  padding:40px 0 34px;border-top:1px solid var(--line);margin-top:44px}
+.artFin .firma{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:17px;color:var(--grey);margin-top:-18px}
+.btnRow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:34px}
+.btn{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line2);padding:13px 24px;
+  border-radius:2px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--offwhite);
+  transition:border-color .3s,color .3s,background-color .3s}
+.btn:hover{border-color:var(--ink);color:var(--ink)}
+.btn.primary{background:var(--crimson);border-color:var(--crimson);color:var(--onCrimson)}
+.btn.primary:hover{background:var(--crimson2);border-color:var(--crimson2);color:var(--onCrimson)}
+
+/* ── PIE ── */
+footer{border-top:1px solid var(--line);padding:52px 24px 44px;text-align:center;margin-top:40px;
+  background:radial-gradient(ellipse at 50% 100%,var(--footTop),var(--bg))}
+footer .fk{font-family:'Noto Serif JP',serif;font-weight:600;font-size:34px;color:var(--ink)}
+footer .fl{font-family:'Cormorant Garamond',serif;letter-spacing:.5em;padding-left:.5em;font-size:14px;
+  color:var(--grey);margin-top:8px}
+footer .fmotto{margin-top:20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--grey)}
+footer .fine{font-size:11px;letter-spacing:.14em;color:var(--dim)}
+.fine+.fine{margin-top:10px}
+.social{display:flex;justify-content:center;gap:14px;margin:30px 0 24px;flex-wrap:wrap}
+.social a{display:flex;align-items:center;gap:9px;border:1px solid var(--line2);padding:11px 20px;border-radius:2px;
+  color:var(--offwhite);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  transition:border-color .3s,color .3s}
+.social a:hover{border-color:var(--crimson);color:var(--ink)}
+
+/* ── Barra de progreso de lectura ──
+   Se anima con scaleX (no con width): no provoca recálculo de diseño en
+   cada scroll y el porcentaje no depende del bloque contenedor. */
+#progreso{position:fixed;top:0;left:0;right:0;height:2px;background:var(--crimson);z-index:950;
+  transform:scaleX(0);transform-origin:0 50%;will-change:transform}
+
+@media(max-width:720px){
+  nav{padding:12px 16px}
+  nav .logo .tag{display:none}
+  .navBack{padding:9px 11px;gap:0}
+  .navBack .lbl{display:none}
+  .artHead{padding:110px 18px 36px}
+  .articulo{padding:40px 20px 16px}
+  .articulo p,.articulo li{font-size:15.5px}
+  .artFin{padding:10px 20px 16px}
+  .social{gap:10px}
+  .social a{padding:10px 15px;font-size:10px;letter-spacing:.16em}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
